@@ -8,7 +8,7 @@ export const site = {
     "Production-focused full-stack development, technical leadership, and delivery ownership from architecture to launch.",
   email: "",
   phone: "",
-  url: "https://wrath91620.github.io/Portfolio",
+  url: "https://krijjal.github.io/Portfolio",
   /** Primary meta description (~155 characters) for search and sharing */
   description:
     "Karim Alrajjal is a production-focused full-stack developer and technical lead building web systems, APIs, CMS platforms, SEO improvements, and reliable delivery workflows.",
@@ -29,7 +29,7 @@ export const site = {
     "portfolio",
   ],
   linkedin: "https://www.linkedin.com/in/karim-alrajjal/",
-  github: "",
+  github: "https://github.com/Krijjal",
   twitter: "",
   bookCallUrl: "",
   cvPath: "",
