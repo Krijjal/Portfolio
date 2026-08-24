@@ -15,7 +15,7 @@ export function SkillsSection() {
         {skillGroups.map((group, i) => (
           <Reveal key={group.id} className={i % 3 === 1 ? "delay-75" : i % 3 === 2 ? "delay-100" : ""}>
             <article className="flex h-full flex-col rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6 transition-colors hover:border-[var(--color-accent)]/35 sm:min-h-[12rem]">
-              <h3 className="font-display text-lg font-medium leading-snug text-[var(--color-text)]">{group.title}</h3>
+              <h3 className="font-display text-lg font-bold leading-snug text-[var(--color-text)]">{group.title}</h3>
               <ul className="mt-4 space-y-2.5 border-t border-[var(--color-border)] pt-4">
                 {group.items.map((item) => (
                   <li key={item} className="flex gap-2 text-sm leading-relaxed text-[var(--color-text-muted)]">

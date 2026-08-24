@@ -15,17 +15,17 @@ export function Footer() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-evenly">
             <Link href="/" aria-label={`${site.name} home`} className="inline-flex">
               <Image
-                src={`${assetBase}/logos/karim-exact-logo.svg`}
+                src={`${assetBase}/logos/kr-lockup.svg`}
                 alt={`${site.name} logo`}
-                width={240}
-                height={56}
-                className="h-[200px] w-auto object-contain"
+                width={800}
+                height={397}
+                className="h-24 w-auto sm:h-28"
               />
             </Link>
             <nav className="flex flex-col self-center items-start gap-2 sm:items-center sm:gap-5" aria-label="Footer">
               <Link
                 href="/"
-                className="text-xs font-medium uppercase tracking-[0.08em] text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
+                className="text-tag uppercase text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
               >
                 Home
               </Link>
@@ -33,7 +33,7 @@ export function Footer() {
                 <Link
                   key={l.href}
                   href={l.href}
-                  className="text-xs font-medium uppercase tracking-[0.08em] text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
+                  className="text-tag uppercase text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-text)]"
                 >
                   {l.label}
                 </Link>
@@ -42,7 +42,7 @@ export function Footer() {
           </div>
 
           <div className="flex items-center justify-between border-t border-[var(--color-border)] pt-5">
-            <p className="text-xs uppercase tracking-[0.08em] text-[var(--color-text-muted)]">
+            <p className="text-tag uppercase text-[var(--color-text-muted)]">
               © {year} {site.name}. All rights reserved.
             </p>
             {site.linkedin ? (

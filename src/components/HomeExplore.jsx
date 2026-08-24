@@ -29,9 +29,9 @@ export function HomeExplore() {
                 href={item.href}
                 className="group flex h-full min-h-[9.5rem] flex-col rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6 transition-colors hover:border-[var(--color-accent)]/45"
               >
-                <span className="inline-flex items-center gap-1.5 font-display text-lg font-semibold tracking-tight text-[var(--color-accent)]">
+                <span className="inline-flex items-center gap-1.5 font-display text-lg font-bold tracking-tight text-[var(--color-accent)]">
                   {item.label}
-                  <IconChevronRight className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                  <IconChevronRight className="transition-transform group-hover:translate-x-0.5" />
                 </span>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-[var(--color-text-muted)]">
                   {blurbs[item.href] ?? ""}

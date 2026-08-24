@@ -21,12 +21,12 @@ export function projectLogoStyles(treatment) {
   switch (treatment) {
     case LOGO_TREATMENT.darkChip:
       return {
-        wrap: "border-zinc-800 bg-zinc-900",
+        wrap: "border-[var(--color-border)] bg-[var(--color-bg-elevated)]",
         img: base,
       };
     case LOGO_TREATMENT.darkArtwork:
       return {
-        wrap: "bg-zinc-900",
+        wrap: "bg-[var(--color-bg-elevated)]",
         img: `${base} brightness-0 invert`,
       };
     case LOGO_TREATMENT.lightArtwork:

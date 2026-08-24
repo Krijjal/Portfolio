@@ -32,7 +32,7 @@ export function About() {
         </Reveal>
         <Reveal className="lg:col-span-5">
           <div className="rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6 sm:p-8">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-[var(--color-accent)]">
+            <h3 className="text-tag uppercase text-[var(--color-accent)]">
               Where I focus
             </h3>
             <ul className="mt-4 space-y-4 text-sm leading-relaxed text-[var(--color-text-muted)]">

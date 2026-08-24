@@ -35,12 +35,12 @@ export function Navbar() {
           aria-label={`${site.name} home`}
         >
           <Image
-            src={`${assetBase}/logos/Personal-logo.png`}
-            alt={`${site.name} logo`}
-            width={240}
-            height={56}
+            src={`${assetBase}/logos/kr-mark.svg`}
+            alt={`${site.name} mark`}
+            width={441}
+            height={288}
             priority
-            className="h-10 w-auto object-contain sm:h-11"
+            className="h-9 w-auto sm:h-10"
           />
         </Link>
 
@@ -54,7 +54,7 @@ export function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`rounded-full px-3 py-2 text-sm font-medium transition-colors ${
+                className={`rounded-full px-3 py-2 text-sm font-semibold transition-colors ${
                   active
                     ? "bg-[var(--color-text)] text-[var(--color-bg)]"
                     : "text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]"
@@ -72,7 +72,7 @@ export function Navbar() {
             <a
               href={site.cvPath}
               download
-              className="hidden min-h-11 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 text-sm font-medium text-[var(--color-text)] transition-colors hover:border-[var(--color-accent)] sm:inline-flex"
+              className="hidden min-h-11 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 text-sm font-semibold text-[var(--color-text)] transition-colors hover:border-[var(--color-accent)] sm:inline-flex"
             >
               CV
             </a>
@@ -117,7 +117,7 @@ export function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="min-h-12 rounded-[var(--radius-md)] border border-transparent bg-[var(--color-bg-elevated)] px-3 py-3 text-base font-medium leading-snug text-[var(--color-text)] transition-colors hover:border-[var(--color-border)]"
+                className="min-h-12 rounded-[var(--radius-md)] border border-transparent bg-[var(--color-bg-elevated)] px-3 py-3 text-sm font-semibold leading-snug text-[var(--color-text)] transition-colors hover:border-[var(--color-border)]"
               >
                 {item.label}
               </Link>

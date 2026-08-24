@@ -1,8 +1,6 @@
 /**
  * CUSTOMIZE: Name, role, URLs, metrics. Single source of truth.
  */
-const assetBase = process.env.NEXT_PUBLIC_BASE_PATH || "";
-
 export const site = {
   name: "Karim Alrajjal",
   title: "Full-Stack Developer & Technical Lead",
@@ -14,7 +12,8 @@ export const site = {
   /** Primary meta description (~155 characters) for search and sharing */
   description:
     "Karim Alrajjal is a production-focused full-stack developer and technical lead building web systems, APIs, CMS platforms, SEO improvements, and reliable delivery workflows.",
-  ogImage: `${assetBase}/logos/Personal-logo.png`,
+  // No production-ready OG image asset yet — see rebrand report. Add a 1200x630 image and point this at it.
+  ogImage: "",
   keywords: [
     "Karim Alrajjal",
     "full stack engineer",

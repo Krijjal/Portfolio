@@ -21,7 +21,7 @@ export function Impact({ compact = false }) {
             className={i === 1 ? "delay-75" : i === 2 ? "delay-100" : i === 3 ? "delay-150" : ""}
           >
             <article className="group flex h-full flex-col rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6 transition-colors hover:border-[var(--color-accent)]/40">
-              <p className="font-display text-3xl font-medium tracking-tight text-[var(--color-accent)] sm:text-4xl">
+              <p className="font-display text-3xl font-bold tracking-tight text-[var(--color-accent)] sm:text-4xl">
                 {stat.value}
               </p>
               <h3 className="mt-3 text-sm font-semibold text-[var(--color-text)]">{stat.label}</h3>
@@ -35,7 +35,7 @@ export function Impact({ compact = false }) {
         <>
       <Reveal className="delay-100">
         <div className="mt-16 rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6 sm:p-8 lg:p-10">
-          <h2 className="font-display text-xl font-medium tracking-tight text-[var(--color-text)] sm:text-2xl">
+          <h2 className="font-display text-xl font-bold tracking-tight text-[var(--color-text)] sm:text-2xl">
             What impact means in practice
           </h2>
           <p className="mt-4 max-w-3xl text-base leading-relaxed text-[var(--color-text-muted)]">
@@ -48,7 +48,7 @@ export function Impact({ compact = false }) {
 
       <div className="mt-14 lg:mt-16">
         <Reveal>
-          <h2 className="font-display text-xl font-medium tracking-tight text-[var(--color-text)] sm:text-2xl">
+          <h2 className="font-display text-xl font-bold tracking-tight text-[var(--color-text)] sm:text-2xl">
             Where it usually shows up
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-text-muted)]">
@@ -60,7 +60,7 @@ export function Impact({ compact = false }) {
           {impactFocusAreas.map((area, i) => (
             <Reveal key={area.title} className={i === 1 ? "delay-75" : i === 2 ? "delay-100" : ""}>
               <article className="flex h-full flex-col rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6 transition-colors hover:border-[var(--color-accent)]/35">
-                <h3 className="font-display text-lg font-medium leading-snug text-[var(--color-text)]">{area.title}</h3>
+                <h3 className="font-display text-lg font-bold leading-snug text-[var(--color-text)]">{area.title}</h3>
                 <p className="mt-3 flex-1 text-sm leading-relaxed text-[var(--color-text-muted)]">{area.description}</p>
               </article>
             </Reveal>
@@ -70,7 +70,7 @@ export function Impact({ compact = false }) {
 
       <Reveal className="delay-75">
         <div className="mt-14 border-t border-[var(--color-border)] pt-8 lg:mt-16 lg:pt-10">
-          <h2 className="font-display text-xl font-medium tracking-tight text-[var(--color-text)] sm:text-2xl">
+          <h2 className="font-display text-xl font-bold tracking-tight text-[var(--color-text)] sm:text-2xl">
             Signals I actually watch
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--color-text-muted)]">

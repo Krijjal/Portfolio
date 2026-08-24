@@ -14,21 +14,21 @@ export function Hero() {
 
       <div className="container-px relative mx-auto max-w-6xl">
         <Reveal>
-          <p className="mb-6 inline-flex max-w-xl flex-wrap items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 py-1.5 text-xs font-medium uppercase tracking-[0.12em] text-[var(--color-text-muted)]">
+          <p className="mb-6 inline-flex max-w-xl flex-wrap items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 py-1.5 text-tag uppercase text-[var(--color-text-muted)]">
             <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" aria-hidden />
             <span>Full Stack . Technical Lead . Production Delivery</span>
           </p>
         </Reveal>
 
-        <Reveal className="delay-75">
-          <h1 className="max-w-4xl text-balance font-display text-4xl font-semibold leading-[1.05] tracking-tight text-[var(--color-text)] sm:text-5xl lg:text-[3.5rem]">
+        <Reveal variant="emphasis">
+          <h1 className="max-w-4xl text-balance text-hero text-[var(--color-text)]">
             I lead and build production web systems from architecture
             <span className="text-[var(--color-text-muted)]"> to launch.</span>
           </h1>
         </Reveal>
 
         <Reveal className="delay-100">
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-[var(--color-text-muted)] sm:text-lg lg:text-xl">
+          <p className="mt-6 max-w-2xl text-lead text-[var(--color-text-muted)]">
             I am Karim Alrajjal, a full-stack developer and team lead working across frontend, backend, CMS platforms,
             APIs, SEO, and performance. I help turn business goals into stable releases with clear architecture, practical
             execution, and systems the next team can maintain.
@@ -39,14 +39,14 @@ export function Hero() {
           <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3.5">
             <Link
               href="/work"
-              className="group inline-flex w-full min-h-12 items-center justify-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-3.5 text-center text-base font-semibold text-[var(--color-bg)] transition-colors hover:bg-[var(--color-accent-hover)] sm:w-auto"
+              className="group inline-flex w-full min-h-12 items-center justify-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-3.5 text-center text-sm font-semibold text-[var(--color-bg)] transition-colors hover:bg-[var(--color-accent-hover)] sm:w-auto"
             >
               View Projects
-              <IconChevronRight className="transition-transform duration-200 group-hover:translate-x-0.5" />
+              <IconChevronRight className="transition-transform group-hover:translate-x-0.5" />
             </Link>
             <Link
               href="/#contact"
-              className="inline-flex w-full min-h-12 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-6 py-3.5 text-center text-base font-semibold text-[var(--color-text)] transition-colors hover:border-[var(--color-accent)] sm:w-auto"
+              className="inline-flex w-full min-h-12 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-6 py-3.5 text-center text-sm font-semibold text-[var(--color-text)] transition-colors hover:border-[var(--color-accent)] sm:w-auto"
             >
               Contact Me
             </Link>
@@ -79,10 +79,10 @@ export function Hero() {
                   key={m.label}
                   className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-4"
                 >
-                  <dt className="text-[11px] font-medium uppercase tracking-[0.12em] text-[var(--color-text-muted)]">
+                  <dt className="text-tag uppercase text-[var(--color-text-muted)]">
                     {m.label}
                   </dt>
-                  <dd className="mt-1 font-display text-2xl font-medium text-[var(--color-text)]">{m.value}</dd>
+                  <dd className="mt-1 font-display text-2xl font-bold text-[var(--color-text)]">{m.value}</dd>
                 </div>
               ))}
             </dl>
@@ -90,19 +90,19 @@ export function Hero() {
         ) : null}
         <Reveal className="delay-[300ms]">
           <ul className="mt-7 flex flex-wrap gap-2">
-            <li className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 py-1.5 text-xs text-[var(--color-text-muted)]">
+            <li className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 py-1.5 text-tag text-[var(--color-text-muted)]">
               React
             </li>
-            <li className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 py-1.5 text-xs text-[var(--color-text-muted)]">
+            <li className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 py-1.5 text-tag text-[var(--color-text-muted)]">
               Next.js
             </li>
-            <li className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 py-1.5 text-xs text-[var(--color-text-muted)]">
+            <li className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 py-1.5 text-tag text-[var(--color-text-muted)]">
               Node.js
             </li>
-            <li className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 py-1.5 text-xs text-[var(--color-text-muted)]">
+            <li className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 py-1.5 text-tag text-[var(--color-text-muted)]">
               Laravel
             </li>
-            <li className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 py-1.5 text-xs text-[var(--color-text-muted)]">
+            <li className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 py-1.5 text-tag text-[var(--color-text-muted)]">
               Technical SEO
             </li>
           </ul>

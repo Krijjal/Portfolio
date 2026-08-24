@@ -17,7 +17,7 @@ export function Services() {
         {services.map((s, i) => (
           <Reveal key={s.title} className={i % 2 === 1 ? "delay-75" : ""}>
             <article className="group flex h-full min-h-full flex-col rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6 transition-colors hover:border-[var(--color-accent)]/45 sm:p-7">
-              <h3 className="font-display text-lg font-medium text-[var(--color-text)]">{s.title}</h3>
+              <h3 className="font-display text-lg font-bold text-[var(--color-text)]">{s.title}</h3>
               <p className="mt-3 flex-1 text-sm leading-relaxed text-[var(--color-text-muted)]">{s.description}</p>
               {site.linkedin ? (
                 <a
@@ -29,7 +29,7 @@ export function Services() {
                 >
                   <span>Talk on</span>
                   <IconLinkedIn className="h-4 w-4" />
-                  <IconChevronRight className="transition-transform duration-200 group-hover:translate-x-0.5" />
+                  <IconChevronRight className="transition-transform group-hover:translate-x-0.5" />
                 </a>
               ) : null}
             </article>

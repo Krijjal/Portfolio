@@ -1,24 +1,37 @@
 @import "tailwindcss";
-@import url("https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap");
 
-/* Visual system: minimal, high-contrast, founder-style */
+/* Brand system: Graphite Ink / Indigo Accent. Tokens centralized here — never hardcode hex in components. */
 @theme {
-  --font-sans: "Satoshi", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Satoshi", ui-sans-serif, system-ui, sans-serif;
+  /* Bank Gothic everywhere — headlines, body, and tags all share one face. It ships Light(300)/Medium(500)/Bold(700) only. */
+  --font-sans: var(--font-bank-gothic), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bank-gothic), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-bank-gothic), ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  --color-bg: oklch(0.102 0.02 252);
-  --color-bg-elevated: oklch(0.14 0.023 252);
-  --color-surface: oklch(0.175 0.026 252);
-  --color-border: oklch(0.265 0.028 252);
-  --color-text: oklch(0.94 0.01 250);
-  --color-text-muted: oklch(0.67 0.022 252);
-  --color-accent: oklch(0.76 0.13 222);
-  --color-accent-hover: oklch(0.83 0.1 222);
+  /* Remap the weight scale to the cuts Bank Gothic actually has, so font-normal/font-semibold don't request a missing weight. */
+  --font-weight-normal: 500;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 700;
+  --font-weight-bold: 700;
+
+  --color-bg: #0b0e14;
+  --color-bg-elevated: #141821;
+  --color-surface: #141821;
+  --color-border: #2a303c;
+  --color-text: #f2f4f8;
+  --color-text-muted: #8b93a7;
+  --color-accent: #7c6cff;
+  --color-accent-hover: color-mix(in oklch, #7c6cff 85%, white);
 
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
+
+  /* Motion: ease-out on entrances, ease-in-out on UI transitions, never linear. */
+  --default-transition-duration: 120ms;
+  --default-transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html {
@@ -31,6 +44,7 @@ html {
 body {
   @apply bg-[var(--color-bg)] text-[var(--color-text)] antialiased leading-relaxed;
   font-family: var(--font-sans);
+  font-weight: 500;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
   min-height: 100dvh;
@@ -74,6 +88,35 @@ body {
       padding-right: max(2rem, env(safe-area-inset-right, 0px));
     }
   }
+
+  /* Type scale — apply exactly. Display/headlines: Bank Gothic Bold (heaviest cut available). Mono: tags, tiny labels, numbering. */
+  .text-hero {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 56px;
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+  }
+  .text-section-head {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+  }
+  .text-lead {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 19px;
+    line-height: 1.55;
+  }
+  .text-tag {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 1.4;
+    letter-spacing: 0.03em;
+  }
 }
 
 /* Snappier taps on touch devices; does not block pinch-zoom on the page */
@@ -84,26 +127,6 @@ button,
 
 ::selection {
   background: color-mix(in oklch, var(--color-accent) 30%, transparent);
-}
-
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(1rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.reveal {
-  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  opacity: 0;
-}
-
-.reveal-visible {
-  opacity: 1;
 }
 
 :focus-visible {
@@ -117,12 +140,9 @@ button,
   background-size: 26px 26px;
 }
 
+/* Reduced motion: entrances fall back to a crossfade only, no translation. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-  }
-  .reveal {
-    animation: none;
-    opacity: 1;
   }
 }

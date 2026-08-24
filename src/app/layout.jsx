@@ -1,9 +1,21 @@
+import localFont from "next/font/local";
 import { site } from "@/data/site";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { SkipLink } from "@/components/SkipLink";
 import BlueSparksCanvas from "@/components/BlueSparksCanvas";
 import "./globals.css";
+
+/** Sole site face — headlines, body, and tags. Bold is the heaviest cut available (no extrabold in this family). */
+const bankGothic = localFont({
+  src: [
+    { path: "../fonts/BankGothicLightRegular.otf", weight: "300", style: "normal" },
+    { path: "../fonts/BankGothicMediumBT.ttf", weight: "500", style: "normal" },
+    { path: "../fonts/BankGothicBold.ttf", weight: "700", style: "normal" },
+  ],
+  variable: "--font-bank-gothic",
+  display: "swap",
+});
 
 const rootTitle = `${site.name} | ${site.title}`;
 const assetBase = process.env.NEXT_PUBLIC_BASE_PATH || "";
@@ -42,13 +54,9 @@ export const metadata = {
     images: site.ogImage ? [site.ogImage] : undefined,
   },
   icons: {
-    icon: [
-      { url: `${assetBase}/logos/Personal-logo.png`, sizes: "32x32", type: "image/png" },
-      { url: `${assetBase}/logos/Personal-logo.png`, sizes: "192x192", type: "image/png" },
-      { url: `${assetBase}/logos/karim-exact-logo.svg`, type: "image/svg+xml" },
-    ],
-    shortcut: [`${assetBase}/logos/Personal-logo.png`],
-    apple: [{ url: `${assetBase}/logos/Personal-logo.png`, sizes: "180x180", type: "image/png" }],
+    icon: [{ url: `${assetBase}/favicon.svg`, type: "image/svg+xml" }],
+    shortcut: [`${assetBase}/favicon.svg`],
+    apple: [{ url: `${assetBase}/favicon.svg`, type: "image/svg+xml" }],
   },
   robots: { index: true, follow: true },
   formatDetection: {
@@ -85,7 +93,7 @@ export default function RootLayout({ children }) {
   };
 
   return (
-    <html lang="en">
+    <html lang="en" className={bankGothic.variable}>
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>

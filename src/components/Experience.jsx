@@ -25,7 +25,7 @@ export function Experience() {
                   <div className="min-w-0 flex-1">
                     <h3
                       id={`employer-${employer.company.replace(/\s+/g, "-").toLowerCase()}`}
-                      className="font-display text-xl font-medium tracking-tight text-[var(--color-text)] sm:text-2xl"
+                      className="font-display text-xl font-bold tracking-tight text-[var(--color-text)] sm:text-2xl"
                     >
                       {employer.company}
                     </h3>
@@ -35,7 +35,7 @@ export function Experience() {
                       </p>
                     ) : null}
                     {employer.roles.length > 1 ? (
-                      <p className="mt-3 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+                      <p className="mt-3 text-tag uppercase text-[var(--color-accent)]">
                         {employer.roles.length} roles
                       </p>
                     ) : null}
@@ -59,10 +59,10 @@ export function Experience() {
                     className={ri > 0 ? "border-t border-[var(--color-border)] pt-10" : ""}
                   >
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between sm:gap-8">
-                      <h4 className="max-w-xl font-display text-lg font-medium leading-snug tracking-tight text-[var(--color-text)]">
+                      <h4 className="max-w-xl font-display text-lg font-bold leading-snug tracking-tight text-[var(--color-text)]">
                         {role.title}
                       </h4>
-                      <p className="shrink-0 text-sm font-normal tabular-nums leading-snug text-[var(--color-text-muted)] sm:text-right">
+                      <p className="shrink-0 font-mono text-[13px] tabular-nums leading-snug text-[var(--color-text-muted)] sm:text-right">
                         {role.period}
                       </p>
                     </div>

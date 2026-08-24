@@ -15,7 +15,8 @@ type Spark = {
   side: "left" | "right";
 };
 
-const BRAND_BLUE = "#3b82f6"; // change this to your exact brand blue
+// Slate Mist — ambient background motion must stay neutral; Indigo Accent is reserved for emphasis, never decoration.
+const PARTICLE_COLOR = "#8B93A7";
 
 /** Mobile / narrow viewports: canvas shadows + high DPR + many particles destroy GPU time. */
 function getPerformanceProfile(w: number) {
@@ -141,12 +142,12 @@ export default function BlueSparksCanvas() {
 
       if (profile.useShadow) {
         ctx.shadowBlur = spark.blur * darknessBoost;
-        ctx.shadowColor = BRAND_BLUE;
-        ctx.fillStyle = BRAND_BLUE;
+        ctx.shadowColor = PARTICLE_COLOR;
+        ctx.fillStyle = PARTICLE_COLOR;
       } else {
         ctx.shadowBlur = 0;
         // Cheap soft dot without shadow pipeline (mobile).
-        ctx.fillStyle = `rgba(147, 197, 253, ${Math.min(1, 0.55 + alpha * 0.35)})`;
+        ctx.fillStyle = `rgba(178, 184, 199, ${Math.min(1, 0.55 + alpha * 0.35)})`;
       }
 
       ctx.beginPath();
@@ -188,7 +189,7 @@ export default function BlueSparksCanvas() {
           Math.max(width, height) / 1.2
         );
 
-        gradient.addColorStop(0, "rgba(59, 130, 246, 0.025)");
+        gradient.addColorStop(0, "rgba(139, 147, 167, 0.025)");
         gradient.addColorStop(1, "rgba(0, 0, 0, 0)");
 
         ctx.fillStyle = gradient;
