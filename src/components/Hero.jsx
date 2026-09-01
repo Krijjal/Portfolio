@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { site } from "@/data/site";
 import { IconChevronRight } from "./icons";
-import { Reveal } from "./Reveal";
+import { HeroSequence } from "./HeroSequence";
 
 export function Hero() {
   return (
@@ -12,31 +12,25 @@ export function Hero() {
       </div>
       <div className="grid-overlay pointer-events-none absolute inset-x-0 top-0 h-[min(62vh,560px)] opacity-20" aria-hidden />
 
-      <div className="container-px relative mx-auto max-w-6xl">
-        <Reveal>
-          <p className="mb-6 inline-flex max-w-xl flex-wrap items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 py-1.5 text-tag uppercase text-[var(--color-text-muted)]">
+      <HeroSequence>
+        <div className="container-px relative mx-auto max-w-6xl">
+          <p className="hero-item mb-6 inline-flex max-w-xl flex-wrap items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 py-1.5 text-tag uppercase text-[var(--color-text-muted)]">
             <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--color-accent)]" aria-hidden />
             <span>Full Stack . Technical Lead . Production Delivery</span>
           </p>
-        </Reveal>
 
-        <Reveal variant="emphasis">
-          <h1 className="max-w-4xl text-balance text-hero text-[var(--color-text)]">
+          <h1 className="hero-item max-w-4xl text-balance text-hero text-[var(--color-text)]">
             I lead and build production web systems from architecture
             <span className="text-[var(--color-text-muted)]"> to launch.</span>
           </h1>
-        </Reveal>
 
-        <Reveal className="delay-100">
-          <p className="mt-6 max-w-2xl text-lead text-[var(--color-text-muted)]">
+          <p className="hero-item mt-6 max-w-2xl text-lead text-[var(--color-text-muted)]">
             I am Karim Alrajjal, a full-stack developer and team lead working across frontend, backend, CMS platforms,
             APIs, SEO, and performance. I help turn business goals into stable releases with clear architecture, practical
             execution, and systems the next team can maintain.
           </p>
-        </Reveal>
 
-        <Reveal className="delay-150">
-          <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3.5">
+          <div className="hero-item mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-3.5">
             <Link
               href="/work"
               className="group inline-flex w-full min-h-12 items-center justify-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-3.5 text-center text-sm font-semibold text-[var(--color-bg)] transition-colors hover:bg-[var(--color-accent-hover)] sm:w-auto"
@@ -60,20 +54,16 @@ export function Hero() {
               </Link>
             ) : null}
           </div>
-        </Reveal>
 
-        <Reveal className="delay-200">
-          <div className="mt-8 max-w-3xl rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)]/80 p-4 sm:p-5">
+          <div className="hero-item mt-8 max-w-3xl rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)]/80 p-4 sm:p-5">
             <p className="text-sm leading-relaxed text-[var(--color-text-muted)]">
               Recent work includes a +60% traffic lift, a #2 primary keyword ranking, and production launches across
               healthcare, ecommerce, sports, interiors, and community platforms.
             </p>
           </div>
-        </Reveal>
 
-        {site.metrics.length > 0 ? (
-          <Reveal className="delay-[250ms]">
-            <dl className="mt-12 grid grid-cols-2 gap-4 border-t border-[var(--color-border)] pt-8 sm:grid-cols-3 sm:gap-5 sm:pt-10">
+          {site.metrics.length > 0 ? (
+            <dl className="hero-item mt-12 grid grid-cols-2 gap-4 border-t border-[var(--color-border)] pt-8 sm:grid-cols-3 sm:gap-5 sm:pt-10">
               {site.metrics.map((m) => (
                 <div
                   key={m.label}
@@ -86,10 +76,9 @@ export function Hero() {
                 </div>
               ))}
             </dl>
-          </Reveal>
-        ) : null}
-        <Reveal className="delay-[300ms]">
-          <ul className="mt-7 flex flex-wrap gap-2">
+          ) : null}
+
+          <ul className="hero-item mt-7 flex flex-wrap gap-2">
             <li className="rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] px-3 py-1.5 text-tag text-[var(--color-text-muted)]">
               React
             </li>
@@ -106,8 +95,8 @@ export function Hero() {
               Technical SEO
             </li>
           </ul>
-        </Reveal>
-      </div>
+        </div>
+      </HeroSequence>
     </section>
   );
 }

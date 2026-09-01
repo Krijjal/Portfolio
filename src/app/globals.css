@@ -53,6 +53,19 @@ body {
     radial-gradient(circle at 90% 20%, color-mix(in oklch, var(--color-accent) 12%, transparent) 0%, transparent 38%);
 }
 
+/* Hero timeline (HeroSequence.jsx) starting state; JS animates in, reduced-motion/no-JS stays visible. */
+.hero-item {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-item {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .sparks-bg {
   position: fixed;
   inset: 0;
@@ -89,19 +102,34 @@ body {
     }
   }
 
-  /* Type scale — apply exactly. Display/headlines: Bank Gothic Bold (heaviest cut available). Mono: tags, tiny labels, numbering. */
+  /* Type scale — 56px/32px is the desktop reference value from the brand spec; Bank Gothic's wide
+     letterforms overflow narrow viewports at that size, so both scale down below the lg breakpoint,
+     and overflow-wrap guards against any future single word still being wider than its container. */
   .text-hero {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 56px;
-    line-height: 1.1;
+    font-size: 2.25rem;
+    line-height: 1.15;
     letter-spacing: 0.01em;
+    overflow-wrap: break-word;
+  }
+  @media (min-width: 640px) {
+    .text-hero {
+      font-size: 3rem;
+    }
+  }
+  @media (min-width: 1024px) {
+    .text-hero {
+      font-size: 56px;
+      line-height: 1.1;
+    }
   }
   .text-section-head {
     font-family: var(--font-display);
     font-weight: 700;
     font-size: 32px;
     line-height: 1.2;
+    overflow-wrap: break-word;
     letter-spacing: 0.01em;
   }
   .text-lead {

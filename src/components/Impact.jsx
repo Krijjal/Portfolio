@@ -3,6 +3,7 @@ import { impactFocusAreas, impactSignals, impactStats } from "@/data/impact";
 import { SectionHeading } from "./SectionHeading";
 import { SectionShell } from "./SectionShell";
 import { Reveal } from "./Reveal";
+import { ImpactStatValue } from "./ImpactStatValue";
 
 /** `compact`: stats + heading only (homepage). Full narrative on /impact when omitted or false. */
 export function Impact({ compact = false }) {
@@ -21,9 +22,10 @@ export function Impact({ compact = false }) {
             className={i === 1 ? "delay-75" : i === 2 ? "delay-100" : i === 3 ? "delay-150" : ""}
           >
             <article className="group flex h-full flex-col rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg-elevated)] p-6 transition-colors hover:border-[var(--color-accent)]/40">
-              <p className="font-display text-3xl font-bold tracking-tight text-[var(--color-accent)] sm:text-4xl">
-                {stat.value}
-              </p>
+              <ImpactStatValue
+                value={stat.value}
+                className="font-display text-3xl font-bold tracking-tight text-[var(--color-accent)] sm:text-4xl"
+              />
               <h3 className="mt-3 text-sm font-semibold text-[var(--color-text)]">{stat.label}</h3>
               <p className="mt-2 flex-1 text-sm leading-relaxed text-[var(--color-text-muted)]">{stat.detail}</p>
             </article>

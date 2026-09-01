@@ -1,15 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { mainNav } from "@/data/nav";
 import { site } from "@/data/site";
 import { IconLinkedIn } from "./icons";
+import { KrMark } from "./KrMark";
 
 export function Navbar() {
-  const assetBase = process.env.NEXT_PUBLIC_BASE_PATH || "";
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -34,14 +33,7 @@ export function Navbar() {
           className="min-w-0 flex-1 sm:flex-none"
           aria-label={`${site.name} home`}
         >
-          <Image
-            src={`${assetBase}/logos/kr-mark.svg`}
-            alt={`${site.name} mark`}
-            width={441}
-            height={288}
-            priority
-            className="h-9 w-auto sm:h-10"
-          />
+          <KrMark className="h-9 w-auto sm:h-10" />
         </Link>
 
         <nav
