@@ -3,6 +3,7 @@ import { site } from "@/data/site";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { SkipLink } from "@/components/SkipLink";
+import { Splash } from "@/components/Splash";
 import BlueSparksCanvas from "@/components/BlueSparksCanvas";
 import "./globals.css";
 
@@ -100,6 +101,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-screen font-sans">
         <BlueSparksCanvas />
         <SkipLink />
+        <Splash />
         <Navbar />
         <main id="main-content" tabIndex={-1}>
           {children}
