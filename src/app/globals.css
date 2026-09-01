@@ -59,8 +59,22 @@ body {
   transform: translateY(12px);
 }
 
+/* Route-change entrance (template.jsx), skipped on "/" which owns its own HeroSequence. */
+.page-enter {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+/* Scroll-triggered group stagger (StaggerReveal.jsx) — Skills, Experience cards. */
+.stagger-item {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .hero-item {
+  .hero-item,
+  .page-enter,
+  .stagger-item {
     opacity: 1;
     transform: none;
   }
