@@ -272,6 +272,36 @@ export const projects = [
     repoUrl: "",
   },
   {
+    id: "tbz",
+    name: "Tarek Bin Ziad (TBZ)",
+    tagline: "Bilingual industrial solar EPC site built for credibility-first B2B and government buyers.",
+    context:
+      "TBZ is a bilingual (Arabic/English) marketing and lead-generation website for an industrial solar and electrical-systems EPC contractor operating in Syria and the wider Middle East, built for facility owners, procurement teams, and government entities evaluating solar and storage installations.",
+    problem:
+      "These buyers convert on trust in execution capability, not a sales pitch, and needed to be served with Arabic as the primary market and canonical locale, English routed as secondary for regional and international buyers, not the other way around.",
+    solution:
+      "Built an industrial, engineering-led design system instead of a startup look: a cool neutral canvas, a dark brand shell for header and footer, orange reserved strictly for calls to action, and Poppins paired with Tajawal for Arabic. Centralized SEO through shared metadata and JSON-LD builders reused across every page rather than duplicated per page. Added an anime.js motion system built on one easing curve site-wide, by design with no bounce or spring, including a scroll-reveal primitive, an orchestrated hero entrance, and a first-load splash where the real logo draws itself in and flies into the header position.",
+    stack: ["Next.js (App Router)", "TypeScript", "animejs", "Bilingual i18n (Arabic/English)", "Technical SEO", "Vercel"],
+    outcome:
+      "Shipped a production bilingual EPC site with a disciplined technical-SEO foundation and a brand-consistent motion system, built around inquiry, WhatsApp, and company-profile-download conversion paths rather than checkout.",
+    proofPoints: [
+      "Live bilingual production site (Arabic canonical, English secondary) on Vercel",
+      "Shared metadata and JSON-LD builders reused across every page instead of per-page duplication",
+      "Media pipeline discipline: source imagery recompressed from 54MB to 8.9MB; the hero video defers off mobile, reduced-motion, and save-data connections",
+    ],
+    imageUrl: withBase("/projects/tbz.jpg"),
+    screenshots: [
+      withBase("/projects/tbz.jpg"),
+      withBase("/projects/tbz-services.jpg"),
+      withBase("/projects/tbz-process.jpg"),
+    ],
+    localLogoUrl: withBase("/logos/tbz.svg"),
+    logoTreatment: "lightArtwork",
+    logoUrl: "https://logo.clearbit.com/tbz-h3ja.vercel.app",
+    liveUrl: "https://tbz-h3ja.vercel.app",
+    repoUrl: "",
+  },
+  {
     id: "elite-edition",
     name: "Elite Edition",
     tagline: "Luxury automotive showroom platform with enquiry driven conversion.",

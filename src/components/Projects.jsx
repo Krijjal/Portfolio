@@ -5,7 +5,7 @@ import { SectionShell } from "./SectionShell";
 import { Reveal } from "./Reveal";
 
 export function Projects() {
-  const featuredFirst = ["cham-clinic", "oppolia-online", "cashcup-sports", "tgmena"];
+  const featuredFirst = ["tbz", "cham-clinic", "oppolia-online", "cashcup-sports", "tgmena"];
   const sortedProjects = [...projects].sort((a, b) => {
     const aIdx = featuredFirst.indexOf(a.id);
     const bIdx = featuredFirst.indexOf(b.id);
