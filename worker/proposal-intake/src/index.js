@@ -10,14 +10,50 @@ const MAX_FIELD_LENGTHS = {
   email: 254,
   company: 120,
   description: 4000,
-  features: 2000,
   timeline: 120,
   referral: 200,
   notes: 2000,
 };
 
-const ALLOWED_PROJECT_TYPES = ["website", "web-app", "ecommerce", "branding", "seo", "other"];
 const ALLOWED_BUDGETS = ["<2k", "2k-5k", "5k-10k", "10k-25k", "25k+", "not-sure"];
+const MAX_MULTISELECT = 10;
+
+// Phrases chosen to hit the contract wizard's own keyword regexes
+// (detectModules/detectFactors in telegram-codex-bot/src/contractWizard.js)
+// so a checked box reliably lands in the right scope bucket, instead of
+// hoping a visitor's free text happens to use the right words.
+const SERVICE_LABELS = {
+  website: "Website design and development.",
+  branding: "Branding and logo design (brand identity).",
+  content: "Content writing and copywriting.",
+  seo: "SEO and on-page optimization.",
+  maintenance: "Ongoing maintenance and support.",
+  ads: "Paid ads setup and management (Google/Meta ads).",
+};
+
+const INTEGRATION_LABELS = {
+  booking: "Booking system integration.",
+  payments: "Payment/checkout integration (Stripe/PayPal).",
+  crm: "CRM integration.",
+  api: "API integration.",
+  ecommerce: "E-commerce / online store functionality.",
+  dashboard: "Custom dashboard or portal.",
+};
+
+function sanitizeMultiselect(value, allowedLabels) {
+  if (!Array.isArray(value)) return [];
+  const seen = new Set();
+  const result = [];
+  for (const item of value) {
+    const key = String(item ?? "");
+    if (allowedLabels[key] && !seen.has(key)) {
+      seen.add(key);
+      result.push(key);
+    }
+    if (result.length >= MAX_MULTISELECT) break;
+  }
+  return result;
+}
 
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const RATE_LIMIT_MAX = 3;
@@ -99,28 +135,39 @@ async function checkRateLimit(kv, ip) {
   return true;
 }
 
-// Human-readable label for each project type — chosen so the words also hit
-// the contract wizard's own keyword regexes (detectModules/detectFactors in
-// telegram-codex-bot/src/contractWizard.js), e.g. "website", "e-commerce",
-// "custom", "branding", "seo" are all keywords it scans for.
-const PROJECT_TYPE_LABELS = {
-  website: "Website",
-  "web-app": "Custom web application",
-  ecommerce: "E-commerce website",
-  branding: "Branding / brand identity",
-  seo: "SEO",
-  other: "Project",
-};
-
 // Builds a message that is BOTH the human-readable lead notification AND,
 // pasted as-is into the bot after /contract, a valid brief for its wizard.
 // The wizard (contractWizard.js: analyzeBrief/submitBrief) only regex-scans
 // free text for keywords like "client:", "timeline:", "website", "branding"
 // etc. — it never executes anything, so the extra metadata lines below are
 // inert as far as its parser is concerned, verified against every pattern in
-// detectModules/detectFactors/extractClientName/detectTimeline.
-function buildTelegramMessage({ name, company, email, projectType, budget, timeline, description, features, notes, referral, ip }) {
-  const projectLabel = PROJECT_TYPE_LABELS[projectType] || PROJECT_TYPE_LABELS.other;
+// detectModules/detectFactors/extractClientName/detectTimeline. Services and
+// integrations are pre-selected checkboxes, not free text, so the wizard's
+// scope detection lands correctly regardless of how the visitor phrases the
+// description field.
+function buildTelegramMessage({
+  name,
+  company,
+  email,
+  services,
+  integrations,
+  bilingual,
+  premiumDesign,
+  urgent,
+  pageCount,
+  budget,
+  timeline,
+  description,
+  notes,
+  referral,
+  ip,
+}) {
+  const pageCountNum = Number(pageCount);
+  const requirementLines = [
+    bilingual ? "Bilingual / multilingual content required." : null,
+    premiumDesign ? "Premium, high-end custom design direction requested." : null,
+    urgent ? "Urgent / rush timeline requested." : null,
+  ].filter(Boolean);
 
   return [
     "NEW WEB LEAD",
@@ -132,9 +179,17 @@ function buildTelegramMessage({ name, company, email, projectType, budget, timel
     `Client: ${company || name}`,
     `Contact: ${name}${company ? ` (${company})` : ""}`,
     `Email: ${email}`,
-    `Project type: ${projectLabel}.`,
+    "",
+    services.length ? "Services requested:" : null,
+    ...services.map((key) => `- ${SERVICE_LABELS[key]}`),
+    integrations.length ? "\nAlso needs:" : null,
+    ...integrations.map((key) => `- ${INTEGRATION_LABELS[key]}`),
+    "",
+    "Project description:",
     description,
-    features ? `Special features requested: ${features}.` : null,
+    "",
+    ...requirementLines,
+    Number.isFinite(pageCountNum) && pageCountNum > 0 ? `Approx. ${pageCountNum} pages.` : null,
     timeline ? `Timeline: ${timeline}.` : null,
     notes ? `Notes: ${notes}.` : null,
     "",
@@ -203,15 +258,19 @@ export default {
     const name = clip(payload.name, MAX_FIELD_LENGTHS.name).trim();
     const email = clip(payload.email, MAX_FIELD_LENGTHS.email).trim();
     const company = clip(payload.company, MAX_FIELD_LENGTHS.company).trim();
-    const projectType = ALLOWED_PROJECT_TYPES.includes(payload.projectType) ? payload.projectType : "other";
+    const services = sanitizeMultiselect(payload.services, SERVICE_LABELS);
+    const integrations = sanitizeMultiselect(payload.integrations, INTEGRATION_LABELS);
+    const bilingual = payload.bilingual === true;
+    const premiumDesign = payload.premiumDesign === true;
+    const urgent = payload.urgent === true;
+    const pageCount = clip(payload.pageCount, 6).trim();
     const description = clip(payload.description, MAX_FIELD_LENGTHS.description).trim();
-    const features = clip(payload.features, MAX_FIELD_LENGTHS.features).trim();
     const timeline = clip(payload.timeline, MAX_FIELD_LENGTHS.timeline).trim();
     const budget = ALLOWED_BUDGETS.includes(payload.budget) ? payload.budget : "not-sure";
     const referral = clip(payload.referral, MAX_FIELD_LENGTHS.referral).trim();
     const notes = clip(payload.notes, MAX_FIELD_LENGTHS.notes).trim();
 
-    if (!name || !isValidEmail(email) || !description) {
+    if (!name || !isValidEmail(email) || !description || !services.length) {
       return json({ ok: false, error: "invalid_input" }, 400, origin);
     }
 
@@ -219,11 +278,15 @@ export default {
       name,
       company,
       email,
-      projectType,
+      services,
+      integrations,
+      bilingual,
+      premiumDesign,
+      urgent,
+      pageCount,
       budget,
       timeline,
       description,
-      features,
       notes,
       referral,
       ip,

@@ -3,13 +3,25 @@
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/data/site";
 
-const PROJECT_TYPES = [
-  { value: "website", label: "Website" },
-  { value: "web-app", label: "Web app / SaaS" },
-  { value: "ecommerce", label: "E-commerce" },
-  { value: "branding", label: "Branding / design" },
-  { value: "seo", label: "SEO / performance" },
-  { value: "other", label: "Something else" },
+// Keep these value/label pairs in sync with worker/proposal-intake/src/index.js
+// (ALLOWED_SERVICES / ALLOWED_INTEGRATIONS) — the worker re-validates server-side
+// regardless, but the lists should match so nothing silently gets dropped.
+const SERVICES = [
+  { value: "website", label: "Website design and development" },
+  { value: "branding", label: "Branding / logo design" },
+  { value: "content", label: "Content writing / copywriting" },
+  { value: "seo", label: "SEO / on-page optimization" },
+  { value: "maintenance", label: "Ongoing maintenance and support" },
+  { value: "ads", label: "Paid ads setup and management" },
+];
+
+const INTEGRATIONS = [
+  { value: "booking", label: "Booking system" },
+  { value: "payments", label: "Payments / checkout" },
+  { value: "crm", label: "CRM integration" },
+  { value: "api", label: "API integration" },
+  { value: "ecommerce", label: "E-commerce / online store" },
+  { value: "dashboard", label: "Custom dashboard or portal" },
 ];
 
 const BUDGETS = [
@@ -24,6 +36,25 @@ const BUDGETS = [
 const inputClass =
   "mt-1.5 w-full rounded-xl border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-2.5 text-sm text-[var(--color-text)] outline-none transition-colors placeholder:text-[var(--color-text-muted)] focus:border-[var(--color-accent)]";
 const labelClass = "block text-sm font-medium text-[var(--color-text)]";
+const checkboxRowClass = "flex items-center gap-2.5 text-sm text-[var(--color-text)]";
+const checkboxClass =
+  "h-4 w-4 shrink-0 rounded border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-accent)] focus:ring-[var(--color-accent)]";
+
+function CheckboxGroup({ legend, name, options, columns = 2 }) {
+  return (
+    <fieldset>
+      <legend className={labelClass}>{legend}</legend>
+      <div className={`mt-2 grid gap-x-6 gap-y-2 ${columns === 2 ? "sm:grid-cols-2" : ""}`}>
+        {options.map((option) => (
+          <label key={option.value} className={checkboxRowClass}>
+            <input type="checkbox" name={name} value={option.value} className={checkboxClass} />
+            {option.label}
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
 
 export function ProposalForm() {
   const [status, setStatus] = useState("idle");
@@ -61,19 +92,30 @@ export function ProposalForm() {
       return;
     }
 
-    setStatus("submitting");
-    setErrorMessage("");
-
     const form = event.currentTarget;
     const data = new FormData(form);
+    const services = data.getAll("services").map((value) => value.toString());
+
+    if (!services.length) {
+      setStatus("error");
+      setErrorMessage("Select at least one service under “What do you need?”");
+      return;
+    }
+
+    setStatus("submitting");
+    setErrorMessage("");
 
     const payload = {
       name: data.get("name")?.toString().trim() || "",
       email: data.get("email")?.toString().trim() || "",
       company: data.get("company")?.toString().trim() || "",
-      projectType: data.get("projectType")?.toString() || "",
+      services,
+      integrations: data.getAll("integrations").map((value) => value.toString()),
+      bilingual: data.get("bilingual") === "on",
+      premiumDesign: data.get("premiumDesign") === "on",
+      urgent: data.get("urgent") === "on",
+      pageCount: data.get("pageCount")?.toString().trim() || "",
       description: data.get("description")?.toString().trim() || "",
-      features: data.get("features")?.toString().trim() || "",
       timeline: data.get("timeline")?.toString().trim() || "",
       budget: data.get("budget")?.toString() || "",
       referral: data.get("referral")?.toString().trim() || "",
@@ -114,7 +156,7 @@ export function ProposalForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+    <form onSubmit={handleSubmit} className="space-y-8" noValidate>
       {/* Honeypot: hidden from real visitors, catches simple bots that fill every field. */}
       <div className="hidden" aria-hidden="true">
         <label htmlFor="proposal-website">Leave this field empty</label>
@@ -134,28 +176,15 @@ export function ProposalForm() {
           </label>
           <input id="proposal-email" name="email" type="email" required maxLength={254} className={inputClass} />
         </div>
-        <div>
+        <div className="sm:col-span-2">
           <label htmlFor="proposal-company" className={labelClass}>
             Company (optional)
           </label>
           <input id="proposal-company" name="company" type="text" maxLength={120} className={inputClass} />
         </div>
-        <div>
-          <label htmlFor="proposal-type" className={labelClass}>
-            Project type *
-          </label>
-          <select id="proposal-type" name="projectType" required defaultValue="" className={inputClass}>
-            <option value="" disabled>
-              Select one
-            </option>
-            {PROJECT_TYPES.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-        </div>
       </div>
+
+      <CheckboxGroup legend="What do you need? *" name="services" options={SERVICES} />
 
       <div>
         <label htmlFor="proposal-description" className={labelClass}>
@@ -172,21 +201,41 @@ export function ProposalForm() {
         />
       </div>
 
-      <div>
-        <label htmlFor="proposal-features" className={labelClass}>
-          Key features / deliverables (optional)
-        </label>
-        <textarea
-          id="proposal-features"
-          name="features"
-          maxLength={2000}
-          rows={3}
-          placeholder="e.g. booking system, bilingual content, admin dashboard"
-          className={inputClass}
-        />
-      </div>
+      <CheckboxGroup legend="Does this need any of these?" name="integrations" options={INTEGRATIONS} />
+
+      <fieldset>
+        <legend className={labelClass}>A few more details</legend>
+        <div className="mt-2 space-y-2">
+          <label className={checkboxRowClass}>
+            <input type="checkbox" name="bilingual" className={checkboxClass} />
+            Needs bilingual / multilingual content
+          </label>
+          <label className={checkboxRowClass}>
+            <input type="checkbox" name="premiumDesign" className={checkboxClass} />
+            Wants a premium, high-end custom design direction
+          </label>
+          <label className={checkboxRowClass}>
+            <input type="checkbox" name="urgent" className={checkboxClass} />
+            Urgent / rush timeline
+          </label>
+        </div>
+      </fieldset>
 
       <div className="grid gap-6 sm:grid-cols-2">
+        <div>
+          <label htmlFor="proposal-pages" className={labelClass}>
+            Approx. number of pages (optional)
+          </label>
+          <input
+            id="proposal-pages"
+            name="pageCount"
+            type="number"
+            min={1}
+            max={999}
+            placeholder="e.g. 5"
+            className={inputClass}
+          />
+        </div>
         <div>
           <label htmlFor="proposal-timeline" className={labelClass}>
             Desired timeline (optional)
@@ -200,7 +249,7 @@ export function ProposalForm() {
             className={inputClass}
           />
         </div>
-        <div>
+        <div className="sm:col-span-2">
           <label htmlFor="proposal-budget" className={labelClass}>
             Budget range *
           </label>
