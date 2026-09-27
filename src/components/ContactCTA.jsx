@@ -26,10 +26,16 @@ export function ContactCTA() {
             integrations, performance, and technical SEO.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
+            <Link
+              href="/start-a-project"
+              className="inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-semibold text-[var(--color-bg)] transition-colors hover:bg-[var(--color-accent-hover)]"
+            >
+              Start a Project
+            </Link>
             {emailHref ? (
               <a
                 href={emailHref}
-                className="inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-semibold text-[var(--color-bg)] transition-colors hover:bg-[var(--color-accent-hover)]"
+                className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text)] transition-colors hover:border-[var(--color-accent)]"
               >
                 Email Me
               </a>

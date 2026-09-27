@@ -33,6 +33,10 @@ export const site = {
   twitter: "",
   bookCallUrl: "",
   cvPath: "",
+  /** Cloudflare Worker URL from worker/proposal-intake — see its README to deploy. */
+  proposalEndpoint: "https://kr-proposal-intake.krijjal.workers.dev",
+  /** Optional: Cloudflare Turnstile site key, only needed if spam becomes a problem. */
+  turnstileSiteKey: "",
   locale: "en_US",
   metrics: [
     { value: "3+", label: "Years in production delivery" },
