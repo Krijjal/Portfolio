@@ -3,11 +3,30 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { clientByProject, markHeight, markSrc } from "@/data/clients";
+import { withBase } from "@/lib/asset";
 import { displayDomain, orderedProjects } from "@/lib/projectOrder";
+import { btnPrimary, btnSecondary, textLink } from "@/lib/ui";
 import { IconChevronRight } from "./icons";
 import { SiteFrame } from "./SiteFrame";
 
 const projects = orderedProjects();
+
+/** The client's mark from the logo marquee, revealed beside the project when it's active. */
+function ClientMark({ client, active }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element -- small static marks, recolored by CSS
+    <img
+      src={withBase(markSrc(client))}
+      alt=""
+      loading="lazy"
+      decoding="async"
+      data-active={active ? "true" : "false"}
+      className="showcase-logo"
+      style={{ height: markHeight(client, 3.4, 1, 1.9) }}
+    />
+  );
+}
 
 /**
  * Home "Selected work": a project index on the left drives a large live-site preview
@@ -32,7 +51,7 @@ export function WorkShowcase() {
           </div>
           <Link
             href="/work"
-            className="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-[var(--color-accent)] underline-offset-4 hover:underline"
+            className={`${textLink} shrink-0`}
           >
             All case studies
             <IconChevronRight />
@@ -44,6 +63,7 @@ export function WorkShowcase() {
           <ol className="min-w-0 border-t border-[var(--color-border)]">
             {projects.map((project, i) => {
               const isActive = i === active;
+              const client = clientByProject[project.id];
               return (
                 <li key={project.id} className="border-b border-[var(--color-border)]">
                   <Link
@@ -51,21 +71,27 @@ export function WorkShowcase() {
                     onMouseEnter={() => setActive(i)}
                     onFocus={() => setActive(i)}
                     aria-current={isActive ? "true" : undefined}
-                    className="group flex items-baseline justify-between gap-4 py-4 outline-offset-4"
+                    className="group grid grid-cols-[minmax(0,1fr)_6rem] items-center gap-4 py-4 outline-offset-4"
                   >
-                    <span
-                      className={`min-w-0 font-display text-xl font-bold leading-snug transition-colors duration-200 ${
-                        isActive ? "text-[var(--color-text)]" : "text-[var(--color-text-muted)] group-hover:text-[var(--color-text)]"
-                      }`}
-                    >
-                      {project.name}
+                    <span className="flex min-w-0 flex-col gap-1">
+                      <span
+                        className={`font-display text-xl font-bold leading-snug transition-colors ${
+                          isActive ? "text-[var(--color-text)]" : "text-[var(--color-text-muted)] group-hover:text-[var(--color-text)]"
+                        }`}
+                      >
+                        {project.name}
+                      </span>
+                      <span
+                        className={`text-tag transition-colors ${
+                          isActive ? "text-[var(--color-accent)]" : "text-[var(--color-text-muted)]"
+                        }`}
+                      >
+                        {project.sector}
+                      </span>
                     </span>
-                    <span
-                      className={`shrink-0 text-tag transition-colors duration-200 ${
-                        isActive ? "text-[var(--color-accent)]" : "text-[var(--color-text-muted)]"
-                      }`}
-                    >
-                      {project.sector}
+                    {/* Fixed slot: every mark sits in the same column, centered in the same box. */}
+                    <span className="flex h-10 items-center justify-center" aria-hidden>
+                      {client ? <ClientMark client={client} active={isActive} /> : null}
                     </span>
                   </Link>
                 </li>
@@ -97,7 +123,7 @@ export function WorkShowcase() {
                 <div className="mt-5 flex flex-wrap gap-2">
                   <Link
                     href={`/work#${current.id}`}
-                    className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-[var(--color-accent)] px-5 text-sm font-semibold text-[var(--color-bg)] transition-colors hover:bg-[var(--color-accent-hover)]"
+                    className={btnPrimary}
                   >
                     Read the case study
                     <span className="sr-only">: {current.name}</span>
@@ -107,7 +133,7 @@ export function WorkShowcase() {
                       href={current.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-[var(--color-border-strong)] px-5 text-sm font-semibold text-[var(--color-text)] transition-colors hover:border-[var(--color-accent)]"
+                      className={btnSecondary}
                     >
                       Live site
                       <span className="sr-only"> for {current.name}</span>
@@ -139,8 +165,11 @@ export function WorkShowcase() {
                     />
                   </div>
                 </SiteFrame>
-                <span className="mt-4 block font-display text-lg font-bold leading-snug text-[var(--color-text)]">
-                  {project.name}
+                <span className="mt-4 flex items-center justify-between gap-3">
+                  <span className="font-display text-lg font-bold leading-snug text-[var(--color-text)]">{project.name}</span>
+                  <span className="flex h-9 w-24 shrink-0 items-center justify-center" aria-hidden>
+                    {clientByProject[project.id] ? <ClientMark client={clientByProject[project.id]} active /> : null}
+                  </span>
                 </span>
                 <span className="mt-1 block text-tag text-[var(--color-accent)]">{project.sector}</span>
                 <span className="mt-2 block text-sm leading-relaxed text-[var(--color-text-muted)]">{project.tagline}</span>

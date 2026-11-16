@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { animate, onScroll, stagger } from "animejs";
-import { prefersReducedMotion } from "@/lib/motion";
+import { MOTION, prefersReducedMotion } from "@/lib/motion";
 
 /**
  * Staggers its `.stagger-item` descendants in together once the group scrolls
@@ -21,8 +21,8 @@ export function StaggerReveal({ children, className = "" }) {
     const animation = animate(items, {
       opacity: [0, 1],
       translateY: [10, 0],
-      duration: 360,
-      ease: "out(3)",
+      duration: MOTION.base,
+      ease: MOTION.ease,
       delay: stagger(70),
       autoplay: onScroll({ target: el, enter: "bottom-=40 top", repeat: false }),
     });

@@ -1,8 +1,7 @@
 /**
- * Case studies shown on the home showcase and the /work gallery.
+ * Case studies shown in the home showcase, the hero wall and the /work deck.
  */
-const assetBase = process.env.NEXT_PUBLIC_BASE_PATH || "";
-const withBase = (assetPath) => `${assetBase}${assetPath}`;
+import { withBase } from "@/lib/asset";
 
 export const projects = [
   {
@@ -24,11 +23,7 @@ export const projects = [
       "Technical SEO and performance improvements integrated into delivery flow",
     ],
     imageUrl: withBase("/projects/tgmena.webp"),
-    screenshots: [withBase("/projects/tgmena.png")],
-    localLogoUrl: withBase("/logos/TG.png"),
-    logoUrl: "https://logo.clearbit.com/tgmena.com",
     liveUrl: "https://tgmena.com",
-    repoUrl: "",
   },
   {
     id: "cham-clinic",
@@ -45,16 +40,7 @@ export const projects = [
     outcome: "Delivered a professional, trust first medical web presence with strong service clarity and communication flow.",
     proofPoints: ["Live bilingual production website", "Service, doctor, and corporate program IA shipped end to end"],
     imageUrl: withBase("/projects/cham-clinic.webp"),
-    screenshots: [
-      withBase("/projects/cham-clinic.jpg"),
-      "https://s.wordpress.com/mshots/v1/https://cham.clinic/#services?w=1600",
-      "https://s.wordpress.com/mshots/v1/https://cham.clinic/#contact?w=1600",
-    ],
-    localLogoUrl: withBase("/logos/cham-clinic.png"),
-    logoTreatment: "darkChip",
-    logoUrl: "https://logo.clearbit.com/cham.clinic",
     liveUrl: "https://cham.clinic",
-    repoUrl: "",
   },
   {
     id: "oppolia-ksa",
@@ -71,15 +57,7 @@ export const projects = [
     outcome: "Shipped a polished Saudi market web experience that supports both discovery and sales conversations.",
     proofPoints: ["Live production catalog website", "Category architecture and enquiry paths implemented for conversion"],
     imageUrl: withBase("/projects/oppolia-ksa.webp"),
-    screenshots: [
-      withBase("/projects/oppolia-ksa.png"),
-      "https://s.wordpress.com/mshots/v1/https://oppoliaksa.com/product-category/%D8%A7%D9%84%D9%85%D8%B7%D8%A7%D8%A8%D8%AE/?w=1600",
-      "https://s.wordpress.com/mshots/v1/https://oppoliaksa.com/product-category/%D8%AE%D8%B2%D8%A7%D8%A6%D9%86/?w=1600",
-    ],
-    localLogoUrl: withBase("/logos/oppolia-ksa.png"),
-    logoUrl: "https://logo.clearbit.com/oppoliaksa.com",
     liveUrl: "https://oppoliaksa.com",
-    repoUrl: "",
   },
   {
     id: "oppolia-online",
@@ -96,15 +74,7 @@ export const projects = [
     outcome: "Delivered a clear and personalized online process that simplifies the path from idea to installed kitchen.",
     proofPoints: ["Live service-journey website", "Appointment-to-installation journey mapped and shipped"],
     imageUrl: withBase("/projects/oppolia-online.webp"),
-    screenshots: [
-      withBase("/projects/oppolia-online.jpg"),
-      "https://s.wordpress.com/mshots/v1/https://oppoliaonline.com/about-us/?w=1600",
-      "https://s.wordpress.com/mshots/v1/https://oppoliaonline.com/contact-us/?w=1600",
-    ],
-    localLogoUrl: withBase("/OPPOLIA%20ONLINE%20LOGO.png"),
-    logoUrl: "https://logo.clearbit.com/oppoliaonline.com",
     liveUrl: "https://oppoliaonline.com",
-    repoUrl: "",
   },
   {
     id: "tarta-de-amor",
@@ -121,15 +91,7 @@ export const projects = [
     outcome: "Delivered a strong emotional brand identity that makes the product feel like an experience.",
     proofPoints: ["Live premium brand website", "Story-led product presentation and key brand sections delivered"],
     imageUrl: withBase("/projects/tarta-de-amor.webp"),
-    screenshots: [
-      withBase("/projects/tarta-de-amor.jpg"),
-      "https://s.wordpress.com/mshots/v1/https://tartadeamor.com/#our-story?w=1600",
-      "https://s.wordpress.com/mshots/v1/https://tartadeamor.com/#visit-us?w=1600",
-    ],
-    localLogoUrl: withBase("/logos/TartaDeAmor.svg"),
-    logoUrl: "https://logo.clearbit.com/tartadeamor.com",
     liveUrl: "https://tartadeamor.com",
-    repoUrl: "",
   },
   {
     id: "toyslab-ksa",
@@ -146,15 +108,7 @@ export const projects = [
     outcome: "Delivered a playful but structured store experience optimized for product discovery and shopping clarity.",
     proofPoints: ["Live bilingual ecommerce storefront", "Product discovery and category navigation rebuilt for scale"],
     imageUrl: withBase("/projects/toyslab-ksa.webp"),
-    screenshots: [
-      withBase("/projects/toyslab-ksa.jpg"),
-      "https://s.wordpress.com/mshots/v1/https://toyslabksa.com/en/collections/all?w=1600",
-      "https://s.wordpress.com/mshots/v1/https://toyslabksa.com/en/collections/educational-games-and-constructions?w=1600",
-    ],
-    localLogoUrl: withBase("/logos/toyslab.webp"),
-    logoUrl: "https://logo.clearbit.com/toyslabksa.com",
     liveUrl: "https://toyslabksa.com",
-    repoUrl: "",
   },
   {
     id: "hadiha",
@@ -171,15 +125,7 @@ export const projects = [
     outcome: "Created a distinct identity driven storefront with clear emotional positioning and focused product communication.",
     proofPoints: ["Live niche ecommerce website", "Messaging and merchandising aligned to brand positioning"],
     imageUrl: withBase("/projects/hadiha.webp"),
-    screenshots: [
-      withBase("/projects/hadiha.jpg"),
-      "https://s.wordpress.com/mshots/v1/https://hadiha.com/collections/all?w=1600",
-      "https://s.wordpress.com/mshots/v1/https://hadiha.com/products?w=1600",
-    ],
-    localLogoUrl: withBase("/logos/hadiha.webp"),
-    logoUrl: "https://logo.clearbit.com/hadiha.com",
     liveUrl: "https://hadiha.com",
-    repoUrl: "",
   },
   {
     id: "ai-syria",
@@ -196,15 +142,7 @@ export const projects = [
     outcome: "Delivered a modern engagement platform aligned with education, community growth, and initiative visibility.",
     proofPoints: ["Live nonprofit/community platform", "Arabic-first information architecture and engagement paths delivered"],
     imageUrl: withBase("/projects/ai-syria.webp"),
-    screenshots: [
-      withBase("/projects/ai-syria.jpg"),
-      "https://s.wordpress.com/mshots/v1/https://aisyria.org/%D8%B9%D9%86-%D8%A7%D9%84%D8%AC%D9%85%D8%B9%D9%8A%D8%A9/?w=1600",
-      "https://s.wordpress.com/mshots/v1/https://aisyria.org/%D8%AA%D9%88%D8%A7%D8%B5%D9%84-%D9%85%D8%B9%D9%86%D8%A7/?w=1600",
-    ],
-    localLogoUrl: withBase("/logos/ai-syria.webp"),
-    logoUrl: "https://logo.clearbit.com/aisyria.org",
     liveUrl: "https://aisyria.org",
-    repoUrl: "",
   },
   {
     id: "gravity-wrestling",
@@ -221,15 +159,7 @@ export const projects = [
     outcome: "Delivered a professional academy web presence optimized for first impression and service discovery.",
     proofPoints: ["Live sports academy website", "Brand and service presentation shipped in responsive layout"],
     imageUrl: withBase("/projects/gravity-wrestling.webp"),
-    screenshots: [
-      withBase("/projects/gravity-wrestling.jpg"),
-      "https://s.wordpress.com/mshots/v1/https://gravity-teal.vercel.app/#programs?w=1600",
-      "https://s.wordpress.com/mshots/v1/https://gravity-teal.vercel.app/#contact?w=1600",
-    ],
-    localLogoUrl: withBase("/gravity-03.png"),
-    logoUrl: "https://logo.clearbit.com/gravity-teal.vercel.app",
     liveUrl: "https://gravity-teal.vercel.app",
-    repoUrl: "",
   },
   {
     id: "kraken-production",
@@ -246,16 +176,7 @@ export const projects = [
     outcome: "Delivered a clean production brand website designed to showcase services and strengthen presentation quality.",
     proofPoints: ["Live creative portfolio website", "Service-led visual hierarchy and navigation implemented"],
     imageUrl: withBase("/projects/kraken.webp"),
-    screenshots: [
-      withBase("/projects/kraken.png"),
-      "https://s.wordpress.com/mshots/v1/https://kraken-brown.vercel.app/#services?w=1600",
-      "https://s.wordpress.com/mshots/v1/https://kraken-brown.vercel.app/#contact?w=1600",
-    ],
-    localLogoUrl: withBase("/logos/Kraken%20(1).svg"),
-    logoTreatment: "darkArtwork",
-    logoUrl: "https://logo.clearbit.com/kraken-brown.vercel.app",
     liveUrl: "https://kraken-brown.vercel.app",
-    repoUrl: "",
   },
   {
     id: "tbz",
@@ -272,21 +193,12 @@ export const projects = [
     outcome:
       "Shipped a production bilingual EPC site with a disciplined technical-SEO foundation and a brand-consistent motion system, built around inquiry, WhatsApp, and company-profile-download conversion paths rather than checkout.",
     proofPoints: [
-      "Live bilingual production site (Arabic canonical, English secondary) on Vercel",
+      "Live bilingual production site at tarekbinziad.com (Arabic canonical, English secondary)",
       "Shared metadata and JSON-LD builders reused across every page instead of per-page duplication",
       "Media pipeline discipline: source imagery recompressed from 54MB to 8.9MB; the hero video defers off mobile, reduced-motion, and save-data connections",
     ],
     imageUrl: withBase("/projects/tbz.webp"),
-    screenshots: [
-      withBase("/projects/tbz.jpg"),
-      withBase("/projects/tbz-services.jpg"),
-      withBase("/projects/tbz-process.jpg"),
-    ],
-    localLogoUrl: withBase("/logos/tbz.svg"),
-    logoTreatment: "lightArtwork",
-    logoUrl: "https://logo.clearbit.com/tbz-h3ja.vercel.app",
-    liveUrl: "https://tbz-h3ja.vercel.app",
-    repoUrl: "",
+    liveUrl: "https://tarekbinziad.com",
   },
   {
     id: "elite-edition",
@@ -303,16 +215,7 @@ export const projects = [
     outcome: "Delivered a polished showroom website aligned with premium positioning and high touch customer journeys.",
     proofPoints: ["Live luxury showroom website", "Enquiry-first inventory and service journey deployed"],
     imageUrl: withBase("/projects/elite-edition.webp"),
-    screenshots: [
-      withBase("/projects/elite-edition.png"),
-      "https://s.wordpress.com/mshots/v1/https://elite-edition.vercel.app/en#inventory?w=1600",
-      "https://s.wordpress.com/mshots/v1/https://elite-edition.vercel.app/en#contact?w=1600",
-    ],
-    localLogoUrl: withBase("/logos/elite%20logo%20(1).svg"),
-    logoTreatment: "lightArtwork",
-    logoUrl: "https://logo.clearbit.com/elite-edition.vercel.app",
     liveUrl: "https://elite-edition.vercel.app/en",
-    repoUrl: "",
   },
   {
     id: "kreston-ksa",
@@ -334,7 +237,6 @@ export const projects = [
     ],
     imageUrl: withBase("/projects/kreston-ksa.webp"),
     liveUrl: "https://www.sbkreston.sa",
-    repoUrl: "",
   },
   {
     id: "sb-consulting",
@@ -356,7 +258,6 @@ export const projects = [
     ],
     imageUrl: withBase("/projects/sb-consulting.webp"),
     liveUrl: "https://sb-consulting-xi.vercel.app",
-    repoUrl: "",
   },
   {
     id: "peace-city-world",
@@ -378,6 +279,5 @@ export const projects = [
     ],
     imageUrl: withBase("/projects/peace-city.webp"),
     liveUrl: "https://peacecity.vercel.app",
-    repoUrl: "",
   },
 ];

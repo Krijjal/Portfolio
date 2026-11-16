@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { displayDomain, orderedProjects } from "@/lib/projectOrder";
-import { prefersReducedMotion } from "@/lib/motion";
+import { btnPrimary, btnSecondary } from "@/lib/ui";
+import { useScrollFrame } from "@/lib/useScrollFrame";
 import { IconChevronRight } from "./icons";
 import { SiteFrame } from "./SiteFrame";
 
@@ -87,7 +88,7 @@ function CaseStudy({ project, onClose }) {
               href={project.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-11 shrink-0 items-center gap-1.5 self-start rounded-full bg-[var(--color-accent)] px-5 text-sm font-semibold text-[var(--color-bg)] transition-colors hover:bg-[var(--color-accent-hover)]"
+              className={`${btnPrimary} shrink-0 self-start`}
             >
               Visit the live site
               <span className="sr-only"> for {project.name}</span>
@@ -144,13 +145,9 @@ export function ProjectDeck() {
   }, [open]);
 
   // Depth: as card i+1 slides over card i, push i back (written to --depth, 0..1).
-  useEffect(() => {
-    if (prefersReducedMotion()) return undefined;
+  useScrollFrame(() => {
     const desktop = window.matchMedia("(min-width: 768px)");
-    let frame = 0;
-
-    function update() {
-      frame = 0;
+    return () => {
       const cards = cardRefs.current;
       for (let i = 0; i < cards.length; i++) {
         const card = cards[i];
@@ -164,20 +161,8 @@ export function ProjectDeck() {
         }
         card.style.setProperty("--depth", depth.toFixed(3));
       }
-    }
-    function onScroll() {
-      if (!frame) frame = requestAnimationFrame(update);
-    }
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  });
 
   function handleClose() {
     setOpenId(null);
@@ -247,7 +232,7 @@ export function ProjectDeck() {
                       id={`open-${project.id}`}
                       aria-haspopup="dialog"
                       onClick={(event) => open(project.id, event.currentTarget)}
-                      className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-[var(--color-accent)] px-5 text-sm font-semibold text-[var(--color-bg)] transition-colors hover:bg-[var(--color-accent-hover)]"
+                      className={btnPrimary}
                     >
                       Read the case study
                       <span className="sr-only">: {project.name}</span>
@@ -257,7 +242,7 @@ export function ProjectDeck() {
                         href={project.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-[var(--color-border-strong)] px-5 text-sm font-semibold text-[var(--color-text)] transition-colors hover:border-[var(--color-accent)]"
+                        className={btnSecondary}
                       >
                         Live site
                         <span className="sr-only"> for {project.name}</span>

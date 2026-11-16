@@ -2,10 +2,9 @@
  * Professional experience by employer. Order = newest employer first.
  * Each entry may include multiple roles at the same organization.
  *
- * Optional: `localLogoUrl` and `logoTreatment` match project logos on the work page.
+ * Optional: `localLogoUrl` (a /public path) and `logoTreatment` (see lib/projectLogo.js) style the logo chip.
  */
-const assetBase = process.env.NEXT_PUBLIC_BASE_PATH || "";
-const withBase = (assetPath) => `${assetBase}${assetPath}`;
+import { withBase } from "@/lib/asset";
 
 export const experience = [
   {
@@ -13,7 +12,6 @@ export const experience = [
     location: "",
     websiteUrl: "https://tgmena.com",
     localLogoUrl: withBase("/logos/TG.png"),
-    logoUrl: "https://logo.clearbit.com/tgmena.com",
     roles: [
       {
         title: "Team Lead",
@@ -31,7 +29,6 @@ export const experience = [
     location: "Damascus, Syria",
     websiteUrl: "https://sarrdeh-tech.com",
     localLogoUrl: withBase("/logos/Sarrdeh-tech.webp"),
-    logoUrl: "https://logo.clearbit.com/sarrdeh-tech.com",
     roles: [
       {
         title: "Development Team Lead / Full Stack Developer",

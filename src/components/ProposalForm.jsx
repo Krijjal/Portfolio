@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { site } from "@/data/site";
+import { btnPrimary } from "@/lib/ui";
 
 // Keep these value/label pairs in sync with worker/proposal-intake/src/index.js
 // (SERVICE_LABELS / INTEGRATION_LABELS) — the worker re-validates server-side
@@ -53,8 +54,8 @@ const inputBase =
 const inputClass = (invalid) =>
   `${inputBase} ${invalid ? "border-[var(--color-danger)]" : "border-[var(--color-border-strong)]"}`;
 const labelClass = "block text-sm font-medium text-[var(--color-text)]";
-const checkboxRowClass = "flex items-center gap-2.5 text-sm text-[var(--color-text)]";
-const checkboxClass = "h-4 w-4 shrink-0";
+const checkboxRowClass = "flex min-h-11 items-center gap-3 text-sm text-[var(--color-text)]";
+const checkboxClass = "h-5 w-5 shrink-0";
 const errorTextClass = "mt-1.5 text-sm text-[var(--color-danger)]";
 
 function validate(form) {
@@ -456,7 +457,7 @@ export function ProposalForm() {
       <button
         type="submit"
         disabled={status === "submitting"}
-        className="inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--color-accent)] px-6 py-2.5 text-sm font-semibold text-[var(--color-bg)] transition-colors hover:bg-[var(--color-accent-hover)] disabled:cursor-not-allowed disabled:opacity-60"
+        className={btnPrimary}
       >
         {status === "submitting" ? "Sending..." : "Request a Proposal"}
       </button>

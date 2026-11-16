@@ -1,4 +1,5 @@
 import { Hero } from "@/components/Hero";
+import { ClientLogos } from "@/components/ClientLogos";
 import { WorkShowcase } from "@/components/WorkShowcase";
 import { ExperienceTimeline } from "@/components/ExperienceTimeline";
 import { ContactCTA } from "@/components/ContactCTA";
@@ -13,6 +14,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <ClientLogos />
       <WorkShowcase />
       <ExperienceTimeline />
       <ContactCTA />

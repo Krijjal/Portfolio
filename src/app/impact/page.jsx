@@ -1,5 +1,4 @@
 import { Impact } from "@/components/Impact";
-import { InnerPage } from "@/components/InnerPage";
 import { site } from "@/data/site";
 import { pageMetadata } from "@/lib/seo";
 
@@ -11,8 +10,8 @@ export const metadata = pageMetadata({
 
 export default function ImpactPage() {
   return (
-    <InnerPage>
+    <>
       <Impact />
-    </InnerPage>
+    </>
   );
 }

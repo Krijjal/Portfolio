@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { experience } from "@/data/experience";
 import { IconChevronRight } from "./icons";
+import { textLink } from "@/lib/ui";
 
 /**
  * Compact career sequence for the home page: every role, newest first, with its
@@ -30,7 +31,7 @@ export function ExperienceTimeline() {
           </p>
           <Link
             href="/experience"
-            className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-accent)] underline-offset-4 hover:underline"
+            className={`${textLink} mt-4`}
           >
             Full experience
             <IconChevronRight />

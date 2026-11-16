@@ -22,24 +22,6 @@ export function IconChevronRight({ className }) {
   );
 }
 
-/** Accordion / disclosure control: ~16px. */
-export function IconChevronDown({ className }) {
-  return (
-    <svg
-      className={cx("inline-block h-4 w-4 shrink-0", className)}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M6 9l6 6 6-6" />
-    </svg>
-  );
-}
-
 /** LinkedIn wordmark-style mark; uses currentColor for fills. */
 export function IconLinkedIn({ className }) {
   return (

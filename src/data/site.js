@@ -1,5 +1,5 @@
 /**
- * CUSTOMIZE: Name, role, URLs, metrics. Single source of truth.
+ * Site identity, URLs and integrations. Single source of truth.
  */
 export const site = {
   name: "Karim Alrajjal",
@@ -37,10 +37,5 @@ export const site = {
   proposalEndpoint: "https://kr-proposal-intake.krijjal.workers.dev",
   /** Optional: Cloudflare Turnstile site key, only needed if spam becomes a problem. */
   turnstileSiteKey: "",
-  locale: "en_US",
-  metrics: [
-    { value: "3+", label: "Years in production delivery" },
-    { value: "Lead", label: "Architecture, reviews, releases" },
-    { value: "Full stack", label: "Frontend, backend, CMS, APIs" },
-  ],
+  locale: "en_US",
 };

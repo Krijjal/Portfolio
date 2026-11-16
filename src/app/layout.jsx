@@ -1,5 +1,7 @@
 import localFont from "next/font/local";
+import { Readex_Pro } from "next/font/google";
 import { site } from "@/data/site";
+import { withBase } from "@/lib/asset";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { SkipLink } from "@/components/SkipLink";
@@ -7,7 +9,10 @@ import { Splash } from "@/components/Splash";
 import BlueSparksCanvas from "@/components/BlueSparksCanvas";
 import "./globals.css";
 
-/** Sole site face — headlines, body, and tags. Bold is the heaviest cut available (no extrabold in this family). */
+/**
+ * Brand display face: headlines, nav, buttons' labels and tags. Bold is the heaviest cut
+ * available (no extrabold in this family). Wide capitals read well large, poorly in paragraphs.
+ */
 const bankGothic = localFont({
   src: [
     { path: "../fonts/BankGothicLightRegular.otf", weight: "300", style: "normal" },
@@ -18,8 +23,18 @@ const bankGothic = localFont({
   display: "swap",
 });
 
+/**
+ * Reading face for paragraphs and form text. Readex Pro is a wide, technical grotesk that
+ * sits comfortably next to Bank Gothic and covers Arabic in the same family.
+ */
+const readex = Readex_Pro({
+  subsets: ["latin", "arabic"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-readex",
+  display: "swap",
+});
+
 const rootTitle = `${site.name} | ${site.title}`;
-const assetBase = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 export const viewport = {
   width: "device-width",
@@ -55,9 +70,9 @@ export const metadata = {
     images: site.ogImage ? [site.ogImage] : undefined,
   },
   icons: {
-    icon: [{ url: `${assetBase}/favicon.svg`, type: "image/svg+xml" }],
-    shortcut: [`${assetBase}/favicon.svg`],
-    apple: [{ url: `${assetBase}/favicon.svg`, type: "image/svg+xml" }],
+    icon: [{ url: withBase("/favicon.svg"), type: "image/svg+xml" }],
+    shortcut: [withBase("/favicon.svg")],
+    apple: [{ url: withBase("/favicon.svg"), type: "image/svg+xml" }],
   },
   robots: { index: true, follow: true },
   formatDetection: {
@@ -94,7 +109,7 @@ export default function RootLayout({ children }) {
   };
 
   return (
-    <html lang="en" className={bankGothic.variable} suppressHydrationWarning>
+    <html lang="en" className={`${bankGothic.variable} ${readex.variable}`} suppressHydrationWarning>
       <head>
         {/* Runs before first paint: scroll reveals may only hide content when JS is actually running. */}
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { doors } from "@/data/home";
 import { projects } from "@/data/projects";
 import { site } from "@/data/site";
+import { HeroWall } from "./HeroWall";
 import { IconChevronRight } from "./icons";
 
 /**
@@ -12,7 +13,7 @@ import { IconChevronRight } from "./icons";
 export function Hero() {
   return (
     <section className="relative overflow-hidden border-b border-[var(--color-border)] pt-[calc(7rem+env(safe-area-inset-top,0px))] pb-16 sm:pb-20 lg:pt-[calc(8.5rem+env(safe-area-inset-top,0px))] lg:pb-24">
-      <div className="grid-overlay pointer-events-none absolute inset-x-0 top-0 h-[min(56vh,520px)] opacity-15" aria-hidden />
+      <HeroWall />
 
       <div className="container-px relative mx-auto max-w-6xl">
         <p className="hero-item flex flex-wrap items-center gap-x-3 gap-y-1 text-tag uppercase text-[var(--color-text-muted)]">
@@ -46,7 +47,12 @@ export function Hero() {
               }`}
             >
               <span className="text-tag uppercase text-[var(--color-text-muted)]">{door.question}</span>
-              <span className="mt-3 font-display text-2xl font-bold leading-tight text-[var(--color-text)] sm:text-3xl">
+              {/* The secondary door carries the accent in its type, mirroring the primary door's filled accent. */}
+              <span
+                className={`mt-3 font-display text-2xl font-bold leading-tight sm:text-3xl ${
+                  door.primary ? "text-[var(--color-text)]" : "text-[var(--color-accent)]"
+                }`}
+              >
                 {door.title}
               </span>
               <span className="mt-3 max-w-[48ch] flex-1 text-sm leading-relaxed text-[var(--color-text-muted)] sm:text-base">
@@ -56,7 +62,7 @@ export function Hero() {
                 className={`mt-8 inline-flex min-h-11 w-fit items-center gap-2 rounded-full px-5 text-sm font-semibold transition-colors ${
                   door.primary
                     ? "bg-[var(--color-accent)] text-[var(--color-bg)] group-hover:bg-[var(--color-accent-hover)]"
-                    : "border border-[var(--color-border-strong)] text-[var(--color-text)]"
+                    : "border border-[var(--color-accent)]/70 text-[var(--color-accent)] group-hover:border-[var(--color-accent)] group-hover:bg-[var(--color-accent)]/10"
                 }`}
               >
                 {door.cta}
@@ -70,7 +76,7 @@ export function Hero() {
           Just looking?{" "}
           <Link
             href="/work"
-            className="font-semibold text-[var(--color-text)] underline decoration-[var(--color-border-strong)] underline-offset-4 hover:decoration-[var(--color-accent)]"
+            className="inline-block py-3 font-semibold text-[var(--color-text)] underline decoration-[var(--color-border-strong)] underline-offset-4 hover:decoration-[var(--color-accent)]"
           >
             Browse {projects.length} shipped projects
           </Link>

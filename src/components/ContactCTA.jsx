@@ -1,3 +1,4 @@
+import { btnPrimary, btnSecondary } from "@/lib/ui";
 import Link from "next/link";
 import { site } from "@/data/site";
 import { Reveal } from "./Reveal";
@@ -28,14 +29,14 @@ export function ContactCTA() {
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               href="/start-a-project"
-              className="inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--color-accent)] px-5 py-2.5 text-sm font-semibold text-[var(--color-bg)] transition-colors hover:bg-[var(--color-accent-hover)]"
+              className={btnPrimary}
             >
               Start a Project
             </Link>
             {emailHref ? (
               <a
                 href={emailHref}
-                className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text)] transition-colors hover:border-[var(--color-accent)]"
+                className={btnSecondary}
               >
                 Email Me
               </a>
@@ -45,7 +46,7 @@ export function ContactCTA() {
                 href={site.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text)] transition-colors hover:border-[var(--color-accent)]"
+                className={btnSecondary}
               >
                 LinkedIn
               </a>
@@ -54,7 +55,7 @@ export function ContactCTA() {
               <Link
                 href={site.cvPath}
                 download
-                className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text)] transition-colors hover:border-[var(--color-accent)]"
+                className={btnSecondary}
               >
                 Download CV
               </Link>
@@ -64,7 +65,7 @@ export function ContactCTA() {
                 href={whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-bg)] px-5 py-2.5 text-sm font-semibold text-[var(--color-text)] transition-colors hover:border-[var(--color-accent)]"
+                className={btnSecondary}
               >
                 WhatsApp
               </a>

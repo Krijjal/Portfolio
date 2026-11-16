@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { projectLogoStyles } from "@/lib/projectLogo";
 import { IconChevronRight } from "./icons";
+import { textLink } from "@/lib/ui";
 
 /** Employer logo chip + site link, for the experience page */
 export function EmployerLogo({ company, websiteUrl, localLogoUrl, logoTreatment }) {
@@ -24,7 +25,7 @@ export function EmployerLogo({ company, websiteUrl, localLogoUrl, logoTreatment 
         className={`mb-1 inline-flex overflow-hidden rounded-md border border-[var(--color-border)] ${logoWrapClass}`}
         title={`Visit ${company}`}
       >
-        {/* Native img: public folder paths like /logos/file.png resolve reliably; avoids Next/Image src edge cases */}
+        {/* eslint-disable-next-line @next/next/no-img-element -- small static logo with a JS fallback on error */}
         <img
           src={activeLogo}
           alt={`${company} logo`}
@@ -38,7 +39,7 @@ export function EmployerLogo({ company, websiteUrl, localLogoUrl, logoTreatment 
         href={websiteUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--color-accent)] underline-offset-4 hover:underline"
+        className={textLink}
       >
         Visit site
         <IconChevronRight className="opacity-80" />

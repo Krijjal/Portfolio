@@ -1,5 +1,4 @@
 import { About } from "@/components/About";
-import { InnerPage } from "@/components/InnerPage";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -11,8 +10,8 @@ export const metadata = pageMetadata({
 
 export default function AboutPage() {
   return (
-    <InnerPage>
+    <>
       <About />
-    </InnerPage>
+    </>
   );
 }

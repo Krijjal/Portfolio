@@ -1,11 +1,12 @@
+import { mainNav } from "@/data/nav";
 import { site } from "@/data/site";
 
-/** Multi-page sitemap. URLs end in "/" to match the canonical tags (trailingSlash: true). */
 export const dynamic = "force-static";
 
+/** Every public route, with trailing slashes to match the canonical URLs (trailingSlash: true). */
 export default function sitemap() {
   const base = site.url.replace(/\/$/, "");
-  const paths = ["", "/work", "/about", "/impact", "/skills", "/experience", "/services", "/start-a-project"];
+  const paths = ["", ...mainNav.map((item) => item.href), "/start-a-project"];
   const now = new Date();
   return paths.map((path) => ({
     url: `${base}${path}/`,

@@ -2,15 +2,18 @@
 
 /* Brand system: Graphite Ink / Indigo Accent. Tokens centralized here — never hardcode hex in components. */
 @theme {
-  /* Bank Gothic everywhere — headlines, body, and tags all share one face. It ships Light(300)/Medium(500)/Bold(700) only. */
-  --font-sans: var(--font-bank-gothic), ui-sans-serif, system-ui, sans-serif;
+  /*
+   * Two faces. Bank Gothic (display + labels) carries the brand: headlines, nav, tags.
+   * Readex Pro (sans) carries reading: paragraphs, buttons, forms, and Arabic.
+   * Bank Gothic ships 300/500/700 only; CSS weight matching maps 400 -> 500 and 600 -> 700 for it.
+   */
+  --font-sans: var(--font-readex), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-bank-gothic), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-bank-gothic), ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  /* Remap the weight scale to the cuts Bank Gothic actually has, so font-normal/font-semibold don't request a missing weight. */
-  --font-weight-normal: 500;
+  --font-weight-normal: 400;
   --font-weight-medium: 500;
-  --font-weight-semibold: 700;
+  --font-weight-semibold: 600;
   --font-weight-bold: 700;
 
   --color-bg: #0b0e14;
@@ -30,12 +33,18 @@
   --radius-lg: 1rem;
   --radius-xl: 1.5rem;
 
-  /* Motion: ease-out on entrances, ease-in-out on UI transitions, never linear. */
-  --default-transition-duration: 120ms;
-  --default-transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-  --ease-out: cubic-bezier(0, 0, 0.2, 1);
-  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
-  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  /*
+   * Motion system: one curve (ease-out quart: fast start, long soft landing) and three
+   * durations. Every hover, reveal, dialog and menu uses these; anime.js effects use the
+   * matching values in src/lib/motion.js. Constant-speed drifts (wall, logos) are the
+   * only linear motion, because a loop must not visibly accelerate.
+   */
+  --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
+  --duration-fast: 200ms;
+  --duration-base: 360ms;
+  --duration-slow: 560ms;
+  --default-transition-duration: var(--duration-fast);
+  --default-transition-timing-function: var(--ease-out);
 }
 
 html {
@@ -51,7 +60,7 @@ html {
 body {
   @apply bg-[var(--color-bg)] text-[var(--color-text)] antialiased leading-relaxed;
   font-family: var(--font-sans);
-  font-weight: 500;
+  font-weight: 400;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
   min-height: 100dvh;
@@ -75,10 +84,10 @@ body {
 
 /* Hero: one authored stagger; the headline (2nd item) gets the longer beat. */
 .hero-item {
-  animation: rise-in 420ms var(--ease-out-quart) both;
+  animation: rise-in var(--duration-base) var(--ease-out) both;
 }
 .hero-item:nth-child(2) {
-  animation-duration: 560ms;
+  animation-duration: var(--duration-slow);
   animation-delay: 90ms;
 }
 .hero-item:nth-child(3) { animation-delay: 180ms; }
@@ -89,7 +98,7 @@ body {
 
 /* Route-change entrance (template.jsx remounts per route, so this replays on every navigation). */
 .page-enter {
-  animation: rise-in 360ms var(--ease-out-quart) both;
+  animation: rise-in var(--duration-base) var(--ease-out) both;
 }
 
 /* Scroll-triggered group stagger (StaggerReveal.jsx): hidden only when JS can reveal it. */
@@ -102,12 +111,146 @@ body {
 [data-reveal] {
   /* Longhands, so Tailwind `delay-*` utilities on the same element still apply. */
   transition-property: opacity, transform;
-  transition-duration: 360ms;
-  transition-timing-function: var(--ease-out-quart);
+  transition-duration: var(--duration-base);
+  transition-timing-function: var(--ease-out);
 }
 .js [data-reveal="pending"] {
   opacity: 0;
   transform: translateY(10px);
+}
+
+/*
+ * Hero 3D wall (HeroWall.jsx). A wide plane of project tiles tilted back in 3D; rows
+ * drift sideways forever, alternating direction. --wall-p (0..1, from scroll) tips the
+ * plane toward flat, scales it up and fades it, so the wall "lands" as you scroll on.
+ */
+.hero-wall {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  perspective: 1400px;
+  perspective-origin: 50% 30%;
+}
+.hero-wall__plane {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: max(180vw, 1900px);
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  transform-style: preserve-3d;
+  transform:
+    translate(-50%, -50%)
+    rotateX(calc(50deg - var(--wall-p, 0) * 32deg))
+    rotateZ(calc(-16deg + var(--wall-p, 0) * 8deg))
+    scale(calc(1 + var(--wall-p, 0) * 0.35));
+  opacity: calc(0.55 - var(--wall-p, 0) * 0.5);
+  will-change: transform, opacity;
+}
+.hero-wall__row {
+  overflow: visible;
+}
+.hero-wall__track {
+  display: flex;
+  width: max-content;
+  animation: wall-drift var(--wall-speed, 120s) linear infinite;
+}
+.hero-wall__row[data-reverse] .hero-wall__track {
+  animation-direction: reverse;
+}
+.hero-wall[data-paused="true"] .hero-wall__track {
+  animation-play-state: paused;
+}
+.hero-wall__tile {
+  display: block;
+  width: 340px;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  margin-right: 26px;
+  object-fit: cover;
+  object-position: top;
+  border-radius: var(--radius-md);
+  border: 1px solid color-mix(in oklch, var(--color-text) 14%, transparent);
+  box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.9);
+}
+/* Keeps the headline and doors readable over the wall, and melts the wall into the page. */
+.hero-wall__scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 75% 70% at 28% 42%, color-mix(in oklch, var(--color-bg) 92%, transparent) 0%, color-mix(in oklch, var(--color-bg) 60%, transparent) 55%, transparent 85%),
+    linear-gradient(to bottom, var(--color-bg) 0%, transparent 16%, transparent 62%, var(--color-bg) 100%);
+}
+@keyframes wall-drift {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (max-width: 767px) {
+  .hero-wall__plane {
+    width: 320vw;
+    gap: 14px;
+    top: 40%;
+  }
+  .hero-wall__tile {
+    width: 190px;
+    margin-right: 14px;
+  }
+}
+
+/* Client logo marquee (ClientLogos.jsx): one-color marks, faded edges, slow loop. */
+.logo-marquee {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+}
+.logo-marquee__track {
+  display: flex;
+  width: max-content;
+  animation: wall-drift 55s linear infinite;
+}
+.logo-marquee:hover .logo-marquee__track {
+  animation-play-state: paused;
+}
+.logo-marquee__set {
+  display: flex;
+  align-items: center;
+  gap: 3.5rem;
+  padding-right: 3.5rem;
+}
+/* Height comes from markHeight() (optical sizing) as an inline style. */
+.logo-marquee__logo {
+  display: block;
+  width: auto;
+  max-width: 10rem;
+  object-fit: contain;
+  /* Any color logo becomes a white silhouette, then dimmed to sit quietly. */
+  filter: brightness(0) invert(1);
+  opacity: 0.5;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+.logo-marquee__logo:hover {
+  opacity: 0.95;
+}
+
+/* Client mark beside the active project in "Selected work": same one-color treatment as the marquee. */
+/* Sits centered in a fixed slot; height comes from markHeight() as an inline style. */
+.showcase-logo {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0;
+  transform: translateX(-8px);
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-base) var(--ease-out);
+}
+.showcase-logo[data-active="true"] {
+  opacity: 0.85;
+  transform: none;
 }
 
 /* Home work showcase (WorkShowcase.jsx): stacked screenshots crossfade with a slow settle. */
@@ -115,8 +258,8 @@ body {
   opacity: 0;
   transform: scale(1.03);
   transition:
-    opacity 450ms var(--ease-out-quart),
-    transform 900ms var(--ease-out-quart);
+    opacity var(--duration-base) var(--ease-out),
+    transform calc(var(--duration-slow) * 1.6) var(--ease-out);
 }
 .showcase-shot.is-active {
   opacity: 1;
@@ -143,27 +286,107 @@ body {
   opacity: calc(var(--depth, 0) * 0.6);
 }
 
-/* Case-study dialog (ProjectDeck.jsx). */
+/*
+ * Case-study dialog (ProjectDeck.jsx). Animates both ways: @starting-style gives the
+ * entry its "from" state, and transitioning `display`/`overlay` with allow-discrete
+ * keeps the dialog in the top layer until the exit has finished. Browsers without
+ * support simply open and close instantly.
+ */
+.case-dialog,
+.case-dialog::backdrop {
+  transition:
+    opacity var(--duration-base) var(--ease-out),
+    transform var(--duration-base) var(--ease-out),
+    overlay var(--duration-base) allow-discrete,
+    display var(--duration-base) allow-discrete;
+}
+.case-dialog {
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+}
 .case-dialog[open] {
-  animation: rise-in 320ms var(--ease-out-quart);
+  opacity: 1;
+  transform: none;
 }
 .case-dialog::backdrop {
+  opacity: 0;
   background: color-mix(in oklch, var(--color-bg) 78%, transparent);
   backdrop-filter: blur(6px);
+}
+.case-dialog[open]::backdrop {
+  opacity: 1;
+}
+@starting-style {
+  .case-dialog[open] {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  .case-dialog[open]::backdrop {
+    opacity: 0;
+  }
 }
 html:has(.case-dialog[open]) {
   overflow: hidden;
 }
 
+/* Mobile menu (Navbar.jsx): fades and slides down; closing reverses it before hiding. */
+.mobile-nav {
+  display: none;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out),
+    display var(--duration-fast) allow-discrete;
+}
+.mobile-nav[data-open="true"] {
+  display: block;
+  opacity: 1;
+  transform: none;
+}
+@starting-style {
+  .mobile-nav[data-open="true"] {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+@media (min-width: 768px) {
+  .mobile-nav[data-open="true"] {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hero-item,
-  .page-enter,
-  .case-dialog[open] {
+  .page-enter {
     animation: none;
   }
-  .showcase-shot {
+  .case-dialog,
+  .case-dialog::backdrop,
+  .mobile-nav {
+    transition: none;
+  }
+  .showcase-shot,
+  .showcase-logo {
     transition: opacity 200ms linear;
     transform: none !important;
+  }
+  .hero-wall__track {
+    animation: none;
+  }
+  .logo-marquee {
+    mask-image: none;
+  }
+  .logo-marquee__track {
+    animation: none;
+    width: auto;
+  }
+  .logo-marquee__set {
+    flex-wrap: wrap;
+    gap: 2rem 3rem;
+  }
+  .logo-marquee__set[aria-hidden] {
+    display: none;
   }
   .deck-card {
     transform: none;
@@ -233,7 +456,7 @@ html:has(.case-dialog[open]) {
   }
   .text-lead {
     font-family: var(--font-sans);
-    font-weight: 500;
+    font-weight: 400;
     font-size: 19px;
     line-height: 1.55;
   }
@@ -258,13 +481,6 @@ button,
 
 :focus-visible {
   @apply outline-2 outline-offset-2 outline-[var(--color-accent)];
-}
-
-.grid-overlay {
-  background-image:
-    linear-gradient(to right, color-mix(in oklch, var(--color-border) 55%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in oklch, var(--color-border) 55%, transparent) 1px, transparent 1px);
-  background-size: 26px 26px;
 }
 
 /* Reduced motion: entrances fall back to a crossfade only, no translation. */

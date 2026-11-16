@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { animate } from "animejs";
 import { mainNav } from "@/data/nav";
+import { MOTION } from "@/lib/motion";
 import { site } from "@/data/site";
 import { IconLinkedIn } from "./icons";
 import { KrMark } from "./KrMark";
@@ -58,7 +59,7 @@ export function Navbar() {
         indicator.style.opacity = "1";
         return;
       }
-      animate(indicator, { translateX: left, width, opacity: 1, duration: 220, ease: "inOut(2)" });
+      animate(indicator, { translateX: left, width, opacity: 1, duration: MOTION.base, ease: MOTION.ease });
     }
 
     positionIndicator(hasPositioned.current);
@@ -94,7 +95,7 @@ export function Navbar() {
       <div className="container-px mx-auto flex h-16 max-w-6xl min-h-16 items-center justify-between gap-3">
         <Link
           href="/"
-          className="min-w-0 flex-1 sm:flex-none"
+          className="flex min-h-11 min-w-0 flex-1 items-center sm:flex-none"
           aria-label={`${site.name} home`}
         >
           <KrMark className="h-9 w-auto sm:h-10" />
@@ -120,7 +121,7 @@ export function Navbar() {
                   if (el) itemRefs.current.set(item.href, el);
                   else itemRefs.current.delete(item.href);
                 }}
-                className={`relative z-10 rounded-full px-3 py-2 text-sm font-semibold transition-colors ${
+                className={`relative z-10 rounded-full px-3 py-2 font-display text-sm font-semibold transition-colors ${
                   active
                     ? "text-[var(--color-bg)]"
                     : "text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)]"
@@ -174,43 +175,43 @@ export function Navbar() {
         </div>
       </div>
 
-      {open ? (
-        <div
-          id="mobile-nav"
-          className="container-px max-h-[min(70vh,calc(100dvh-env(safe-area-inset-top,0px)-4rem))] overflow-y-auto overscroll-y-contain border-t border-[var(--color-border)] bg-[var(--color-bg)] py-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] md:hidden"
-        >
-          <nav className="flex flex-col gap-1" aria-label="Mobile primary">
-            {mainNav.map((item) => {
-              const active = pathname === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  aria-current={active ? "page" : undefined}
-                  className={`min-h-12 rounded-[var(--radius-md)] border px-3 py-3 text-sm font-semibold leading-snug transition-colors ${
-                    active
-                      ? "border-[var(--color-accent)] bg-[var(--color-bg-elevated)] text-[var(--color-text)]"
-                      : "border-transparent bg-[var(--color-bg-elevated)] text-[var(--color-text)] hover:border-[var(--color-border)]"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-            {site.linkedin ? (
-              <a
-                href={site.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn"
-                className="mt-2 inline-flex min-h-12 min-w-12 items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-accent)] px-3 py-3 text-[var(--color-bg)]"
+      {/* Always rendered so it can animate out; `.mobile-nav` (globals.css) hides it when closed. */}
+      <div
+        id="mobile-nav"
+        data-open={open ? "true" : "false"}
+        className="mobile-nav container-px max-h-[min(70vh,calc(100dvh-env(safe-area-inset-top,0px)-4rem))] overflow-y-auto overscroll-y-contain border-t border-[var(--color-border)] bg-[var(--color-bg)] py-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))]"
+      >
+        <nav className="flex flex-col gap-1" aria-label="Mobile primary">
+          {mainNav.map((item) => {
+            const active = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? "page" : undefined}
+                className={`min-h-12 rounded-[var(--radius-md)] border px-3 py-3 font-display text-sm font-semibold leading-snug transition-colors ${
+                  active
+                    ? "border-[var(--color-accent)] bg-[var(--color-bg-elevated)] text-[var(--color-text)]"
+                    : "border-transparent bg-[var(--color-bg-elevated)] text-[var(--color-text)] hover:border-[var(--color-border)]"
+                }`}
               >
-                <IconLinkedIn className="h-6 w-6" />
-              </a>
-            ) : null}
-          </nav>
-        </div>
-      ) : null}
+                {item.label}
+              </Link>
+            );
+          })}
+          {site.linkedin ? (
+            <a
+              href={site.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="mt-2 inline-flex min-h-12 min-w-12 items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-accent)] px-3 py-3 text-[var(--color-bg)]"
+            >
+              <IconLinkedIn className="h-6 w-6" />
+            </a>
+          ) : null}
+        </nav>
+      </div>
     </header>
   );
 }
