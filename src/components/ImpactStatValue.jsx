@@ -11,15 +11,14 @@ import { prefersReducedMotion } from "@/lib/motion";
  */
 export function ImpactStatValue({ value, className }) {
   const ref = useRef(null);
-  const parsed = parseCountable(value);
-
   useEffect(() => {
+    const parsed = parseCountable(value);
     if (!parsed) return;
     const el = ref.current;
     if (!el || prefersReducedMotion()) return;
 
     const counter = { value: 0 };
-    animate(counter, {
+    const animation = animate(counter, {
       value: parsed.target,
       duration: 1100,
       ease: "outExpo",
@@ -33,8 +32,11 @@ export function ImpactStatValue({ value, className }) {
         repeat: false,
       }),
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    return () => {
+      animation.revert();
+      el.textContent = value;
+    };
+  }, [value]);
 
   return (
     <p ref={ref} className={className}>

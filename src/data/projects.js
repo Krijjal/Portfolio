@@ -1,5 +1,5 @@
 /**
- * CUSTOMIZE: Replace with your real case studies. Add/remove objects as needed.
+ * Case studies shown on the home showcase and the /work gallery.
  */
 const assetBase = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const withBase = (assetPath) => `${assetBase}${assetPath}`;
@@ -8,6 +8,7 @@ export const projects = [
   {
     id: "tgmena",
     name: "TGMENA",
+    sector: "Digital growth",
     tagline: "Digital ecosystem delivery across product pages, growth surfaces, and operational workflows.",
     context:
       "At TGMENA, I led and shipped web products and growth-focused surfaces where content quality, performance, and structured delivery directly impacted visibility and business momentum.",
@@ -22,7 +23,7 @@ export const projects = [
       "Multiple production releases shipped with cross-team coordination",
       "Technical SEO and performance improvements integrated into delivery flow",
     ],
-    imageUrl: withBase("/projects/tgmena.png"),
+    imageUrl: withBase("/projects/tgmena.webp"),
     screenshots: [withBase("/projects/tgmena.png")],
     localLogoUrl: withBase("/logos/TG.png"),
     logoUrl: "https://logo.clearbit.com/tgmena.com",
@@ -32,6 +33,7 @@ export const projects = [
   {
     id: "cham-clinic",
     name: "Cham Clinic",
+    sector: "Healthcare",
     tagline: "Bilingual healthcare platform for specialty and corporate medical services.",
     context:
       "Cham Clinic is a bilingual healthcare website for a specialty medical center in Damascus offering outpatient care, emergency services, diagnostic imaging, laboratory testing, telemedicine, and corporate medical services.",
@@ -42,7 +44,7 @@ export const projects = [
     stack: ["WordPress", "UI/UX", "Bilingual UX", "Healthcare content architecture", "Responsive UI"],
     outcome: "Delivered a professional, trust first medical web presence with strong service clarity and communication flow.",
     proofPoints: ["Live bilingual production website", "Service, doctor, and corporate program IA shipped end to end"],
-    imageUrl: withBase("/projects/cham-clinic.jpg"),
+    imageUrl: withBase("/projects/cham-clinic.webp"),
     screenshots: [
       withBase("/projects/cham-clinic.jpg"),
       "https://s.wordpress.com/mshots/v1/https://cham.clinic/#services?w=1600",
@@ -57,6 +59,7 @@ export const projects = [
   {
     id: "oppolia-ksa",
     name: "Oppolia KSA",
+    sector: "Home interiors",
     tagline: "Saudi focused home interiors platform with premium catalog presentation.",
     context:
       "Oppolia KSA is a Saudi facing product and brand website focused on home solutions including kitchens, wardrobes, bedroom furniture, bathroom units, internal doors, and complete home packages.",
@@ -67,7 +70,7 @@ export const projects = [
     stack: ["WordPress", "UI/UX", "Technical SEO", "Catalog UX", "Brand first UI", "Lead generation structure"],
     outcome: "Shipped a polished Saudi market web experience that supports both discovery and sales conversations.",
     proofPoints: ["Live production catalog website", "Category architecture and enquiry paths implemented for conversion"],
-    imageUrl: withBase("/projects/oppolia-ksa.png"),
+    imageUrl: withBase("/projects/oppolia-ksa.webp"),
     screenshots: [
       withBase("/projects/oppolia-ksa.png"),
       "https://s.wordpress.com/mshots/v1/https://oppoliaksa.com/product-category/%D8%A7%D9%84%D9%85%D8%B7%D8%A7%D8%A8%D8%AE/?w=1600",
@@ -81,6 +84,7 @@ export const projects = [
   {
     id: "oppolia-online",
     name: "Oppolia Online",
+    sector: "Kitchen services",
     tagline: "Service led kitchen journey from booking to installation.",
     context:
       "Oppolia Online is a service led platform built around ordering a kitchen design journey online, from appointment booking to home measurement, design follow up, delivery, and installation.",
@@ -91,7 +95,7 @@ export const projects = [
     stack: ["Laravel", "UI/UX", "Laravel Blade (Front-end)", "Service journey UX", "Conversion copy structure"],
     outcome: "Delivered a clear and personalized online process that simplifies the path from idea to installed kitchen.",
     proofPoints: ["Live service-journey website", "Appointment-to-installation journey mapped and shipped"],
-    imageUrl: withBase("/projects/oppolia-online.jpg"),
+    imageUrl: withBase("/projects/oppolia-online.webp"),
     screenshots: [
       withBase("/projects/oppolia-online.jpg"),
       "https://s.wordpress.com/mshots/v1/https://oppoliaonline.com/about-us/?w=1600",
@@ -105,6 +109,7 @@ export const projects = [
   {
     id: "tarta-de-amor",
     name: "Tarta de Amor",
+    sector: "Dessert brand",
     tagline: "Brand led dessert experience built on emotion and presentation.",
     context:
       "Tarta De Amor is a premium dessert and cake brand website centered around handcrafted products, storytelling, and elevated visual presentation.",
@@ -115,7 +120,7 @@ export const projects = [
     stack: ["Shopify Liquid", "Brand storytelling", "Premium UI", "Responsive commerce presentation"],
     outcome: "Delivered a strong emotional brand identity that makes the product feel like an experience.",
     proofPoints: ["Live premium brand website", "Story-led product presentation and key brand sections delivered"],
-    imageUrl: withBase("/projects/tarta-de-amor.jpg"),
+    imageUrl: withBase("/projects/tarta-de-amor.webp"),
     screenshots: [
       withBase("/projects/tarta-de-amor.jpg"),
       "https://s.wordpress.com/mshots/v1/https://tartadeamor.com/#our-story?w=1600",
@@ -127,32 +132,9 @@ export const projects = [
     repoUrl: "",
   },
   {
-    id: "cashcup-sports",
-    name: "CashCup Sports",
-    tagline: "Community football platform for tournaments, teams, and match visibility.",
-    context:
-      "Cash Cup Sports is a Jeddah born community football platform built around tournaments, match tracking, team registration, player visibility, and public facing competition data.",
-    problem:
-      "The platform needed to unify multiple user journeys (teams, players, and fans) into one clear event driven digital experience.",
-    solution:
-      "Designed and structured a sports competition interface combining tournament discovery, registration flow, match center access, QR check in pathways, and player and team visibility.",
-    stack: ["Node.js (Backend)", "React.js (Front-end)", "UX", "Event flow architecture", "Responsive frontend"],
-    outcome: "Shipped a modern grassroots football platform with professional competition structure.",
-    proofPoints: ["Live tournament platform in production", "Registration, match center, and team/player journeys implemented"],
-    imageUrl: withBase("/projects/cashcup-sports.jpg"),
-    screenshots: [
-      withBase("/projects/cashcup-sports.jpg"),
-      "https://s.wordpress.com/mshots/v1/https://cashcupsports.com/en/tournaments?w=1600",
-      "https://s.wordpress.com/mshots/v1/https://cashcupsports.com/en/match-center?w=1600",
-    ],
-    localLogoUrl: withBase("/logo.png"),
-    logoUrl: "https://logo.clearbit.com/cashcupsports.com",
-    liveUrl: "https://cashcupsports.com",
-    repoUrl: "",
-  },
-  {
     id: "toyslab-ksa",
     name: "ToysLab KSA",
+    sector: "Toy ecommerce",
     tagline: "Bilingual toy ecommerce with category first shopping flow.",
     context:
       "Toys Lab KSA is an Arabic and English toy ecommerce website focused on educational and category based shopping, including STEM and activity driven products.",
@@ -163,7 +145,7 @@ export const projects = [
     stack: ["Shopify Liquid", "UI/UX", "Bilingual navigation", "Retail category architecture"],
     outcome: "Delivered a playful but structured store experience optimized for product discovery and shopping clarity.",
     proofPoints: ["Live bilingual ecommerce storefront", "Product discovery and category navigation rebuilt for scale"],
-    imageUrl: withBase("/projects/toyslab-ksa.jpg"),
+    imageUrl: withBase("/projects/toyslab-ksa.webp"),
     screenshots: [
       withBase("/projects/toyslab-ksa.jpg"),
       "https://s.wordpress.com/mshots/v1/https://toyslabksa.com/en/collections/all?w=1600",
@@ -177,6 +159,7 @@ export const projects = [
   {
     id: "hadiha",
     name: "Hadiha",
+    sector: "Wellness ecommerce",
     tagline: "Niche ecommerce brand centered on calm and stress relief.",
     context:
       "Hadiha is a calming products ecommerce brand built around stress relief and tactile comfort, positioning products as everyday emotional relief tools.",
@@ -187,7 +170,7 @@ export const projects = [
     stack: ["Shopify Liquid", "UI/UX", "Niche brand positioning", "Conversion copy", "Ecommerce layout"],
     outcome: "Created a distinct identity driven storefront with clear emotional positioning and focused product communication.",
     proofPoints: ["Live niche ecommerce website", "Messaging and merchandising aligned to brand positioning"],
-    imageUrl: withBase("/projects/hadiha.jpg"),
+    imageUrl: withBase("/projects/hadiha.webp"),
     screenshots: [
       withBase("/projects/hadiha.jpg"),
       "https://s.wordpress.com/mshots/v1/https://hadiha.com/collections/all?w=1600",
@@ -201,6 +184,7 @@ export const projects = [
   {
     id: "ai-syria",
     name: "AI Syria",
+    sector: "Education nonprofit",
     tagline: "Mission driven platform for AI education and entrepreneurship in Syria.",
     context:
       "AI Syria is a nonprofit style community and education platform supporting students, researchers, developers, and entrepreneurs through AI training, content, and initiatives.",
@@ -211,7 +195,7 @@ export const projects = [
     stack: ["WordPress", "UI/UX", "Community platform UX", "Arabic first content structure", "Responsive web"],
     outcome: "Delivered a modern engagement platform aligned with education, community growth, and initiative visibility.",
     proofPoints: ["Live nonprofit/community platform", "Arabic-first information architecture and engagement paths delivered"],
-    imageUrl: withBase("/projects/ai-syria.jpg"),
+    imageUrl: withBase("/projects/ai-syria.webp"),
     screenshots: [
       withBase("/projects/ai-syria.jpg"),
       "https://s.wordpress.com/mshots/v1/https://aisyria.org/%D8%B9%D9%86-%D8%A7%D9%84%D8%AC%D9%85%D8%B9%D9%8A%D8%A9/?w=1600",
@@ -225,6 +209,7 @@ export const projects = [
   {
     id: "gravity-wrestling",
     name: "Gravity Wrestling Academy",
+    sector: "Sports academy",
     tagline: "Sports academy website for a wrestling brand in Jeddah.",
     context:
       "Gravity is a sports academy website developed for a wrestling brand in Jeddah, focused on presenting the academy identity and services through a modern web presence.",
@@ -235,7 +220,7 @@ export const projects = [
     stack: ["Next.js", "UI/UX", "Sports brand web design", "Responsive frontend"],
     outcome: "Delivered a professional academy web presence optimized for first impression and service discovery.",
     proofPoints: ["Live sports academy website", "Brand and service presentation shipped in responsive layout"],
-    imageUrl: withBase("/projects/gravity-wrestling.jpg"),
+    imageUrl: withBase("/projects/gravity-wrestling.webp"),
     screenshots: [
       withBase("/projects/gravity-wrestling.jpg"),
       "https://s.wordpress.com/mshots/v1/https://gravity-teal.vercel.app/#programs?w=1600",
@@ -249,6 +234,7 @@ export const projects = [
   {
     id: "kraken-production",
     name: "Kraken: Video Production & Photography",
+    sector: "Video production",
     tagline: "Creative portfolio website for a production and photography brand.",
     context:
       "Kraken is a creative portfolio website built to present video production and photography services through a clean, modern client facing experience.",
@@ -259,7 +245,7 @@ export const projects = [
     stack: ["Next.js", "UI/UX", "Creative portfolio UX", "Visual presentation design"],
     outcome: "Delivered a clean production brand website designed to showcase services and strengthen presentation quality.",
     proofPoints: ["Live creative portfolio website", "Service-led visual hierarchy and navigation implemented"],
-    imageUrl: withBase("/projects/kraken.png"),
+    imageUrl: withBase("/projects/kraken.webp"),
     screenshots: [
       withBase("/projects/kraken.png"),
       "https://s.wordpress.com/mshots/v1/https://kraken-brown.vercel.app/#services?w=1600",
@@ -274,6 +260,7 @@ export const projects = [
   {
     id: "tbz",
     name: "Tarek Bin Ziad (TBZ)",
+    sector: "Industrial solar",
     tagline: "Bilingual industrial solar EPC site built for credibility-first B2B and government buyers.",
     context:
       "TBZ is a bilingual (Arabic/English) marketing and lead-generation website for an industrial solar and electrical-systems EPC contractor operating in Syria and the wider Middle East, built for facility owners, procurement teams, and government entities evaluating solar and storage installations.",
@@ -289,7 +276,7 @@ export const projects = [
       "Shared metadata and JSON-LD builders reused across every page instead of per-page duplication",
       "Media pipeline discipline: source imagery recompressed from 54MB to 8.9MB; the hero video defers off mobile, reduced-motion, and save-data connections",
     ],
-    imageUrl: withBase("/projects/tbz.jpg"),
+    imageUrl: withBase("/projects/tbz.webp"),
     screenshots: [
       withBase("/projects/tbz.jpg"),
       withBase("/projects/tbz-services.jpg"),
@@ -304,6 +291,7 @@ export const projects = [
   {
     id: "elite-edition",
     name: "Elite Edition",
+    sector: "Luxury automotive",
     tagline: "Luxury automotive showroom platform with enquiry driven conversion.",
     context:
       "Elite Edition is a Riyadh luxury automotive showroom website presenting hand picked inventory and high touch services including test drives, trade ins, financing, sourcing, and after sales care.",
@@ -314,7 +302,7 @@ export const projects = [
     stack: ["Next.js", "UI/UX", "Luxury UI systems", "Inventory presentation architecture", "Conversion focused UX"],
     outcome: "Delivered a polished showroom website aligned with premium positioning and high touch customer journeys.",
     proofPoints: ["Live luxury showroom website", "Enquiry-first inventory and service journey deployed"],
-    imageUrl: withBase("/projects/elite-edition.png"),
+    imageUrl: withBase("/projects/elite-edition.webp"),
     screenshots: [
       withBase("/projects/elite-edition.png"),
       "https://s.wordpress.com/mshots/v1/https://elite-edition.vercel.app/en#inventory?w=1600",
@@ -324,6 +312,72 @@ export const projects = [
     logoTreatment: "lightArtwork",
     logoUrl: "https://logo.clearbit.com/elite-edition.vercel.app",
     liveUrl: "https://elite-edition.vercel.app/en",
+    repoUrl: "",
+  },
+  {
+    id: "kreston-ksa",
+    name: "Kreston KSA",
+    sector: "Accounting & audit",
+    tagline: "Bilingual site for Kreston Sindi Batterjee, a Saudi accounting and audit firm since 1982.",
+    context:
+      "Kreston Sindi Batterjee is a Saudi accounting, auditing, and financial and tax advisory firm founded in 1982, with 8+ branches across the Kingdom and membership of Kreston International, a network of 186 firms in 100+ countries.",
+    problem:
+      "A firm with four decades of history and an international network needed a site that showed both its local depth and its global standards, served Arabic and English clients equally, and made a broad list of professional services easy to navigate.",
+    solution:
+      "Built a bilingual site that leads with the firm's track record and Kreston membership, organizes services such as tax and zakat advisory, financial statement audit, feasibility studies, M&A, restructuring and local content certificates, and adds a worldwide Kreston firm finder alongside work and careers sections.",
+    stack: ["Next.js", "Bilingual i18n (Arabic/English)", "UI/UX", "Professional services IA"],
+    outcome:
+      "Delivered a production bilingual site on the firm's own domain that pairs more than 40 years of local practice with Kreston's global network.",
+    proofPoints: [
+      "Live on the firm's own .sa domain in Arabic and English",
+      "Service catalogue, global firm finder, work and careers sections in one structure",
+    ],
+    imageUrl: withBase("/projects/kreston-ksa.webp"),
+    liveUrl: "https://www.sbkreston.sa",
+    repoUrl: "",
+  },
+  {
+    id: "sb-consulting",
+    name: "SB Consulting",
+    sector: "Financial advisory",
+    tagline: "Bilingual site for a Jeddah financial advisory firm: modelling, valuation and corporate finance.",
+    context:
+      "SB Consulting is a financial advisory firm in Jeddah offering financial modelling, mergers and acquisitions, feasibility studies, financing and capital advisory, restructuring and insolvency, and planning, budgeting and forecasting for businesses across Saudi Arabia.",
+    problem:
+      "Advisory firms sell judgment, so the site had to signal senior expertise and discretion to Saudi business owners in both Arabic and English, and make six specialist services easy to tell apart.",
+    solution:
+      "Designed a restrained, premium identity with a dedicated Arabic type pairing, organized the firm's story into about, approach and services, and gave each service a clear description and a direct route to contact.",
+    stack: ["Next.js", "Bilingual i18n (Arabic/English)", "UI/UX", "Premium brand UI", "Vercel"],
+    outcome:
+      "Shipped a credible bilingual presence that presents the firm's six advisory services clearly and leads straight to a conversation.",
+    proofPoints: [
+      "Live bilingual site with a dedicated Arabic typeface pairing",
+      "Six advisory services structured from first question to closed outcome",
+    ],
+    imageUrl: withBase("/projects/sb-consulting.webp"),
+    liveUrl: "https://sb-consulting-xi.vercel.app",
+    repoUrl: "",
+  },
+  {
+    id: "peace-city-world",
+    name: "Peace City World",
+    sector: "Urban development",
+    tagline: "Bilingual platform for a master developer building sustainable Peace Cities worldwide.",
+    context:
+      "Peace City World presents itself as the global platform for building and developing Peace Cities: sustainable master developments in support of the UN Sustainable Development Goals 2030, spanning smart cities, the PCW Tech Group and a sustainable food program.",
+    problem:
+      "A large, long-horizon vision had to read as credible to investors, partners and governments in English and Arabic, without dissolving into abstract mission statements.",
+    solution:
+      "Structured the site around what the developer actually does: capabilities, featured projects and territories, partners, a gallery and a dedicated investor path, with Arabic and English versions of every page.",
+    stack: ["Next.js", "Bilingual i18n (Arabic/English)", "UI/UX", "Investor-facing content architecture", "Vercel"],
+    outcome:
+      "Delivered a bilingual platform that turns a global development vision into clear paths for investors, partners and governments.",
+    proofPoints: [
+      "Live bilingual site with Arabic and English routes",
+      "Dedicated sections for capabilities, featured projects and territories, and investors",
+    ],
+    imageUrl: withBase("/projects/peace-city.webp"),
+    liveUrl: "https://peacecity.vercel.app",
     repoUrl: "",
   },
 ];

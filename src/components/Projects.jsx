@@ -1,34 +1,17 @@
-import { projects } from "@/data/projects";
-import { ProjectCaseStudy } from "./ProjectCaseStudy";
+import { ProjectDeck } from "./ProjectDeck";
 import { SectionHeading } from "./SectionHeading";
 import { SectionShell } from "./SectionShell";
-import { Reveal } from "./Reveal";
 
 export function Projects() {
-  const featuredFirst = ["tbz", "cham-clinic", "oppolia-online", "cashcup-sports", "tgmena"];
-  const sortedProjects = [...projects].sort((a, b) => {
-    const aIdx = featuredFirst.indexOf(a.id);
-    const bIdx = featuredFirst.indexOf(b.id);
-    if (aIdx === -1 && bIdx === -1) return 0;
-    if (aIdx === -1) return 1;
-    if (bIdx === -1) return -1;
-    return aIdx - bIdx;
-  });
-
   return (
     <SectionShell id="work" variant="muted">
       <SectionHeading
+        as="h1"
         eyebrow="Case studies"
         title="Work I have stood behind."
-        description="Selected production work with business context, technical choices, and measurable delivery outcomes."
+        description="Selected production work with business context, technical choices, and measurable delivery outcomes. Scroll through the deck, or open any project for the full story."
       />
-      <div className="flex flex-col gap-8 lg:gap-10">
-        {sortedProjects.map((project, index) => (
-          <Reveal key={project.id}>
-            <ProjectCaseStudy project={project} index={index} />
-          </Reveal>
-        ))}
-      </div>
+      <ProjectDeck />
     </SectionShell>
   );
 }

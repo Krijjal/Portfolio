@@ -94,8 +94,10 @@ export default function RootLayout({ children }) {
   };
 
   return (
-    <html lang="en" className={bankGothic.variable}>
+    <html lang="en" className={bankGothic.variable} suppressHydrationWarning>
       <head>
+        {/* Runs before first paint: scroll reveals may only hide content when JS is actually running. */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body className="min-h-screen font-sans">

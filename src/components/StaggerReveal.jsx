@@ -18,7 +18,7 @@ export function StaggerReveal({ children, className = "" }) {
     const items = el.querySelectorAll(".stagger-item");
     if (!items.length || prefersReducedMotion()) return;
 
-    animate(items, {
+    const animation = animate(items, {
       opacity: [0, 1],
       translateY: [10, 0],
       duration: 360,
@@ -26,6 +26,8 @@ export function StaggerReveal({ children, className = "" }) {
       delay: stagger(70),
       autoplay: onScroll({ target: el, enter: "bottom-=40 top", repeat: false }),
     });
+    // Release the scroll observer on unmount (route change) instead of leaking one per visit.
+    return () => animation.revert();
   }, []);
 
   return (

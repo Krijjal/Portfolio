@@ -20,7 +20,10 @@
   --color-text: #f2f4f8;
   --color-text-muted: #8b93a7;
   --color-accent: #7c6cff;
-  --color-accent-hover: color-mix(in oklch, #7c6cff 85%, white);
+  --color-accent-hover: color-mix(in oklch, var(--color-accent) 85%, white);
+  /* Form controls need >= 3:1 against their surface (WCAG 1.4.11); --color-border is decorative only. */
+  --color-border-strong: #5a6274;
+  --color-danger: #ff8a8a;
 
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
@@ -32,9 +35,13 @@
   --default-transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 html {
+  /* Permanently dark UI: native controls, dropdowns and scrollbars follow it. */
+  color-scheme: dark;
+  accent-color: var(--color-accent);
   scroll-behavior: smooth;
   overflow-x: clip;
   -webkit-text-size-adjust: 100%;
@@ -53,45 +60,123 @@ body {
     radial-gradient(circle at 90% 20%, color-mix(in oklch, var(--color-accent) 12%, transparent) 0%, transparent 38%);
 }
 
-/* Hero timeline (HeroSequence.jsx) starting state; JS animates in, reduced-motion/no-JS stays visible. */
+/*
+ * Motion is progressive enhancement: content is visible by default and never waits on JS.
+ * - Hero and route entrances are pure CSS keyframes, so they run at first paint (no hydration wait).
+ * - Scroll reveals only hide content once the inline <head> script has added `.js` to <html>,
+ *   so no-JS visitors, crawlers and failed bundles still see everything.
+ */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+/* Hero: one authored stagger; the headline (2nd item) gets the longer beat. */
 .hero-item {
-  opacity: 0;
-  transform: translateY(12px);
+  animation: rise-in 420ms var(--ease-out-quart) both;
 }
+.hero-item:nth-child(2) {
+  animation-duration: 560ms;
+  animation-delay: 90ms;
+}
+.hero-item:nth-child(3) { animation-delay: 180ms; }
+.hero-item:nth-child(4) { animation-delay: 270ms; }
+.hero-item:nth-child(5) { animation-delay: 360ms; }
+.hero-item:nth-child(6) { animation-delay: 450ms; }
+.hero-item:nth-child(n + 7) { animation-delay: 540ms; }
 
-/* Route-change entrance (template.jsx), skipped on "/" which owns its own HeroSequence. */
+/* Route-change entrance (template.jsx remounts per route, so this replays on every navigation). */
 .page-enter {
-  opacity: 0;
-  transform: translateY(12px);
+  animation: rise-in 360ms var(--ease-out-quart) both;
 }
 
-/* Scroll-triggered group stagger (StaggerReveal.jsx) — Skills, Experience cards. */
-.stagger-item {
+/* Scroll-triggered group stagger (StaggerReveal.jsx): hidden only when JS can reveal it. */
+.js .stagger-item {
   opacity: 0;
   transform: translateY(10px);
+}
+
+/* Single-block scroll reveal (Reveal.jsx). */
+[data-reveal] {
+  /* Longhands, so Tailwind `delay-*` utilities on the same element still apply. */
+  transition-property: opacity, transform;
+  transition-duration: 360ms;
+  transition-timing-function: var(--ease-out-quart);
+}
+.js [data-reveal="pending"] {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+/* Home work showcase (WorkShowcase.jsx): stacked screenshots crossfade with a slow settle. */
+.showcase-shot {
+  opacity: 0;
+  transform: scale(1.03);
+  transition:
+    opacity 450ms var(--ease-out-quart),
+    transform 900ms var(--ease-out-quart);
+}
+.showcase-shot.is-active {
+  opacity: 1;
+  transform: none;
+}
+
+/*
+ * /work stacked deck (ProjectDeck.jsx). Each card sticks under the header with a small
+ * extra offset per position, so earlier cards show as slivers above the current one.
+ * --depth (0..1, set from scroll) pushes a covered card back: smaller and darker.
+ */
+@media (min-width: 768px) {
+  .deck-item {
+    top: calc(6rem + var(--stack-offset, 0px));
+  }
+}
+.deck-card {
+  transform: scale(calc(1 - var(--depth, 0) * 0.06));
+  transform-origin: 50% 0;
+  box-shadow: 0 -24px 60px -36px rgb(0 0 0 / 0.9);
+  will-change: transform;
+}
+.deck-shade {
+  opacity: calc(var(--depth, 0) * 0.6);
+}
+
+/* Case-study dialog (ProjectDeck.jsx). */
+.case-dialog[open] {
+  animation: rise-in 320ms var(--ease-out-quart);
+}
+.case-dialog::backdrop {
+  background: color-mix(in oklch, var(--color-bg) 78%, transparent);
+  backdrop-filter: blur(6px);
+}
+html:has(.case-dialog[open]) {
+  overflow: hidden;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-item,
   .page-enter,
-  .stagger-item {
+  .case-dialog[open] {
+    animation: none;
+  }
+  .showcase-shot {
+    transition: opacity 200ms linear;
+    transform: none !important;
+  }
+  .deck-card {
+    transform: none;
+    will-change: auto;
+  }
+  .js .stagger-item,
+  .js [data-reveal="pending"] {
     opacity: 1;
     transform: none;
   }
-}
-
-.sparks-bg {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: clip;
-}
-
-.sparks-canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
+  [data-reveal] {
+    transition: none;
+  }
 }
 
 /**

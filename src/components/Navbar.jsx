@@ -19,6 +19,7 @@ export function Navbar() {
   const indicatorRef = useRef(null);
   const itemRefs = useRef(new Map());
   const hasPositioned = useRef(false);
+  const toggleRef = useRef(null);
 
   useEffect(() => {
     setOpen(false);
@@ -38,8 +39,14 @@ export function Navbar() {
     const indicator = indicatorRef.current;
 
     function positionIndicator(animated) {
+      if (!nav || !indicator) return;
       const activeEl = itemRefs.current.get(pathname);
-      if (!nav || !indicator || !activeEl) return;
+      // Routes outside mainNav ("/", "/start-a-project") have no item to sit under:
+      // hide the pill instead of leaving it on the previously visited page.
+      if (!activeEl) {
+        indicator.style.opacity = "0";
+        return;
+      }
       const navRect = nav.getBoundingClientRect();
       const itemRect = activeEl.getBoundingClientRect();
       const left = itemRect.left - navRect.left;
@@ -59,8 +66,28 @@ export function Navbar() {
 
     const handleResize = () => positionIndicator(false);
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    // Bank Gothic loads with font-display: swap, so item widths change after the first measure.
+    let cancelled = false;
+    document.fonts?.ready.then(() => {
+      if (!cancelled) positionIndicator(false);
+    });
+    return () => {
+      cancelled = true;
+      window.removeEventListener("resize", handleResize);
+    };
   }, [pathname]);
+
+  useEffect(() => {
+    if (!open) return;
+    function onKeyDown(event) {
+      if (event.key === "Escape") {
+        setOpen(false);
+        toggleRef.current?.focus();
+      }
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-transparent bg-transparent pt-[env(safe-area-inset-top,0px)] transition-colors">
@@ -128,6 +155,7 @@ export function Navbar() {
             </a>
           ) : null}
           <button
+            ref={toggleRef}
             type="button"
             className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--color-border)] bg-[var(--color-bg-elevated)] md:hidden"
             aria-expanded={open}

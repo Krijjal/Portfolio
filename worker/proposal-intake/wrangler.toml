@@ -17,3 +17,7 @@ id = "0f611127517c49889c8c8a6ad0fd536a"
 #   TELEGRAM_BOT_TOKEN
 #   TELEGRAM_CHAT_ID
 #   TURNSTILE_SECRET_KEY   (optional)
+
+# Persist console logs (drops, rejections, delivery failures) in Workers Logs.
+[observability]
+enabled = true

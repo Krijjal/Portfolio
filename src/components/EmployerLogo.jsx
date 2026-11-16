@@ -4,10 +4,11 @@ import { useState } from "react";
 import { projectLogoStyles } from "@/lib/projectLogo";
 import { IconChevronRight } from "./icons";
 
-/** Employer logo chip + site link, aligned with ProjectCaseStudy logos */
-export function EmployerLogo({ company, websiteUrl, localLogoUrl, logoUrl, logoTreatment }) {
+/** Employer logo chip + site link, for the experience page */
+export function EmployerLogo({ company, websiteUrl, localLogoUrl, logoTreatment }) {
   const [logoFailed, setLogoFailed] = useState(false);
-  const activeLogo = !logoFailed && localLogoUrl ? localLogoUrl : logoUrl ?? "";
+  // Local logos only: the old remote fallback (Clearbit) is retired; a failed logo is hidden.
+  const activeLogo = !logoFailed ? localLogoUrl ?? "" : "";
   const { wrap: logoWrapClass, img: logoImgClass } = projectLogoStyles(logoTreatment);
 
   if (!websiteUrl || !activeLogo) {

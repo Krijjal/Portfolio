@@ -9,6 +9,7 @@ export function Services() {
   return (
     <SectionShell id="services" variant="muted">
       <SectionHeading
+        as="h1"
         eyebrow="Services"
         title="Work with me on something that matters."
         description="If you need a senior engineer who can still steer delivery, or a lead who writes real code when it counts, we can start with a clear scope and a handoff you can trust."

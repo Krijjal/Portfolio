@@ -10,6 +10,7 @@ export function Impact({ compact = false }) {
   return (
     <SectionShell id="impact" variant="muted">
       <SectionHeading
+        as={compact ? "h2" : "h1"}
         eyebrow="Impact"
         title="Outcomes tied to production work."
         description="I focus on outcomes that survive launch: traffic, rankings, performance, stable systems, and handoffs that teams can operate without guesswork."

@@ -70,13 +70,26 @@ Wrangler prints the worker's URL (`https://kr-proposal-intake.<your-subdomain>.w
 
 - **Origin allowlist** — only requests from your configured domain are accepted; everything else gets a 403 before any processing.
 - **Honeypot field** — a hidden `website` field real visitors never fill in; bots that auto-fill every field trip it and get a silent fake-success.
-- **Timing trap** — rejects submissions completed in under 3 seconds (faster than a human can plausibly fill the form).
+- **Timing trap** — rejects submissions completed in under 3 seconds (faster than a human can plausibly fill the form). Time on page is measured by the page itself (`elapsedMs`, a monotonic clock), so a visitor whose system clock is wrong is never mistaken for a bot. `loadedAt` is accepted only as a fallback for pages built before `elapsedMs` existed.
 - **Per-IP rate limiting** — 3 submissions/hour/IP via Cloudflare KV.
 - **Payload size cap** — rejects bodies over 20KB before parsing.
-- **Field allowlisting + length caps** — every field is clipped to a max length; enum fields (project type, budget) are validated against a fixed list, anything else falls back to a safe default.
+- **Field allowlisting + length caps** — every field is clipped to a max length; the service/integration checkboxes and budget are validated against fixed lists, anything else is dropped or falls back to a safe default. Fields are validated before the rate limit is counted, so fixing a typo doesn't burn an hourly slot.
 - **Plain-text Telegram delivery** — messages are sent with no `parse_mode`, so nothing a visitor types can inject Telegram Markdown/HTML formatting.
 - **Optional Cloudflare Turnstile** — wire in a site key on the form + secret key here for CAPTCHA-grade bot defense if spam becomes a real problem; the worker works without it (defenses above are the baseline, not a fallback).
 - **No secrets ever reach the browser** — the bot token and chat ID exist only as Worker secrets, never in the site's client-side bundle.
+
+## Delivery and failure handling
+
+- **Long briefs** are split on line boundaries into numbered messages (`(1/2)`, `(2/2)`), each under Telegram's 4096-character limit. Paste all parts, in order, after `/contract`.
+- **Telegram down or misconfigured** (revoked token, wrong chat ID, outage): the lead is parked in KV for 30 days instead of being lost, and the visitor still sees a success message. List and read parked leads with:
+
+  ```bash
+  npx wrangler kv key list --binding RATE_LIMIT_KV --prefix lead:
+  npx wrangler kv key get --binding RATE_LIMIT_KV "lead:<key>"
+  ```
+
+- **Logs**: every drop (honeypot, too fast), rejection (invalid input, Turnstile, rate limit), delivery and failure is logged as one JSON line. `[observability]` is enabled in `wrangler.toml`, so they appear in the Cloudflare dashboard under Workers Logs, or live with `npx wrangler tail`.
+- **Deploy order**: the site sends both `elapsedMs` and `loadedAt`, so the site and the worker can be deployed in either order. Redeploy the worker with `npm run deploy` after changing `src/index.js`.
 
 ## Known limitation
 

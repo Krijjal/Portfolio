@@ -7,6 +7,7 @@ export function SkillsSection() {
   return (
     <SectionShell id="skills">
       <SectionHeading
+        as="h1"
         eyebrow="Capabilities"
         title="What I actually use day to day."
         description="Grouped by how I think about the work: leadership and architecture first, then the layers underneath. This is not every tool I have ever touched, it is what I trust in production."

@@ -1,41 +1,20 @@
 import { Hero } from "@/components/Hero";
-import { Impact } from "@/components/Impact";
-import { HomeExplore } from "@/components/HomeExplore";
+import { WorkShowcase } from "@/components/WorkShowcase";
+import { ExperienceTimeline } from "@/components/ExperienceTimeline";
 import { ContactCTA } from "@/components/ContactCTA";
+import { pageMetadata } from "@/lib/seo";
 import { site } from "@/data/site";
 
-const homeTitle = `${site.name} | ${site.title}`;
+const base = pageMetadata({ path: "/", title: `${site.name} | ${site.title}`, description: site.description });
 
-export const metadata = {
-  title: { absolute: homeTitle },
-  description: site.description,
-  keywords: site.keywords,
-  alternates: { canonical: "/" },
-  openGraph: {
-    title: homeTitle,
-    description: site.description,
-    url: site.url,
-    siteName: site.name,
-    locale: site.locale.replace("_", "-"),
-    type: "website",
-    images: site.ogImage
-      ? [{ url: site.ogImage, width: 1200, height: 630, alt: `${site.name} portfolio preview` }]
-      : undefined,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: homeTitle,
-    description: site.description,
-    images: site.ogImage ? [site.ogImage] : undefined,
-  },
-};
+export const metadata = { ...base, title: { absolute: `${site.name} | ${site.title}` } };
 
 export default function HomePage() {
   return (
     <>
       <Hero />
-      <Impact compact />
-      <HomeExplore />
+      <WorkShowcase />
+      <ExperienceTimeline />
       <ContactCTA />
     </>
   );

@@ -9,11 +9,18 @@ const MAX_FIELD_LENGTHS = {
   name: 120,
   email: 254,
   company: 120,
-  description: 4000,
+  description: 3000,
   timeline: 120,
   referral: 200,
-  notes: 2000,
+  notes: 1000,
 };
+
+// Telegram rejects sendMessage text over 4096 characters. Long briefs are split
+// on line boundaries into consecutive messages under this size.
+const TELEGRAM_CHUNK_CHARS = 3900;
+const TELEGRAM_TIMEOUT_MS = 8000;
+// Undelivered leads are parked in KV for this long so nothing is lost if Telegram is down.
+const UNDELIVERED_TTL_SECONDS = 30 * 24 * 60 * 60;
 
 const ALLOWED_BUDGETS = ["<2k", "2k-5k", "5k-10k", "10k-25k", "25k+", "not-sure"];
 const MAX_MULTISELECT = 10;
@@ -112,6 +119,66 @@ async function verifyTurnstile(token, secret, ip) {
   if (!res.ok) return false;
   const outcome = await res.json();
   return outcome.success === true;
+}
+
+/**
+ * Time the visitor spent on the form, in ms. Prefers `elapsedMs`, which the page
+ * measures with its own monotonic clock. `loadedAt` (a client wall-clock timestamp
+ * compared with the server clock) is only a fallback for pages built before
+ * elapsedMs existed: a visitor whose clock runs fast would otherwise be dropped.
+ */
+function fillTimeMs(payload) {
+  const elapsed = Number(payload.elapsedMs);
+  if (Number.isFinite(elapsed) && elapsed >= 0) return elapsed;
+  const loadedAt = Number(payload.loadedAt || 0);
+  return loadedAt ? Date.now() - loadedAt : 0;
+}
+
+/** Split text into chunks of at most `max` chars, breaking on newlines where possible. */
+function chunkText(text, max) {
+  const chunks = [];
+  let current = "";
+  for (const line of text.split("\n")) {
+    const pieces = line.length > max ? line.match(new RegExp(`[\\s\\S]{1,${max}}`, "g")) : [line];
+    for (const piece of pieces) {
+      const next = current ? `${current}\n${piece}` : piece;
+      if (next.length > max) {
+        chunks.push(current);
+        current = piece;
+      } else {
+        current = next;
+      }
+    }
+  }
+  if (current) chunks.push(current);
+  return chunks;
+}
+
+async function sendTelegram(env, text) {
+  const chunks = chunkText(text, TELEGRAM_CHUNK_CHARS);
+  for (let i = 0; i < chunks.length; i++) {
+    const body = chunks.length > 1 ? `(${i + 1}/${chunks.length})\n${chunks[i]}` : chunks[i];
+    const res = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        chat_id: env.TELEGRAM_CHAT_ID,
+        text: body,
+        // No parse_mode — sent as plain text so nothing a visitor types can
+        // break or inject Markdown/HTML formatting in the delivered message.
+        disable_web_page_preview: true,
+      }),
+      signal: AbortSignal.timeout(TELEGRAM_TIMEOUT_MS),
+    });
+    if (!res.ok) {
+      const detail = await res.text().catch(() => "");
+      throw new Error(`telegram ${res.status} on part ${i + 1}/${chunks.length}: ${detail.slice(0, 200)}`);
+    }
+  }
+}
+
+function log(event, fields = {}) {
+  console.log(JSON.stringify({ event, ...fields }));
 }
 
 async function checkRateLimit(kv, ip) {
@@ -231,30 +298,24 @@ export default {
       return json({ ok: false, error: "invalid_json" }, 400, origin);
     }
 
+    const ip = request.headers.get("cf-connecting-ip") || "unknown";
+
     // Honeypot: a field real visitors never see or fill in. Bots that fill
     // every field trip this. Report success so scrapers don't learn to skip it.
     if (payload.website) {
+      log("dropped_honeypot", { ip });
       return json({ ok: true }, 200, origin);
     }
 
     // Timing trap: a human needs at least a few seconds to fill this form out.
-    const loadedAt = Number(payload.loadedAt || 0);
-    if (!loadedAt || Date.now() - loadedAt < MIN_FILL_TIME_MS) {
+    const fillMs = fillTimeMs(payload);
+    if (fillMs < MIN_FILL_TIME_MS) {
+      log("dropped_too_fast", { ip, fillMs });
       return json({ ok: true }, 200, origin);
     }
 
-    const ip = request.headers.get("cf-connecting-ip") || "unknown";
-
-    const turnstileOk = await verifyTurnstile(payload.turnstileToken, env.TURNSTILE_SECRET_KEY, ip);
-    if (!turnstileOk) {
-      return json({ ok: false, error: "verification_failed" }, 403, origin);
-    }
-
-    const withinLimit = await checkRateLimit(env.RATE_LIMIT_KV, ip);
-    if (!withinLimit) {
-      return json({ ok: false, error: "rate_limited" }, 429, origin);
-    }
-
+    // Validate before the rate limit, so a visitor fixing a mistake doesn't burn
+    // one of their hourly submissions.
     const name = clip(payload.name, MAX_FIELD_LENGTHS.name).trim();
     const email = clip(payload.email, MAX_FIELD_LENGTHS.email).trim();
     const company = clip(payload.company, MAX_FIELD_LENGTHS.company).trim();
@@ -271,7 +332,20 @@ export default {
     const notes = clip(payload.notes, MAX_FIELD_LENGTHS.notes).trim();
 
     if (!name || !isValidEmail(email) || !description || !services.length) {
+      log("rejected_invalid_input", { ip });
       return json({ ok: false, error: "invalid_input" }, 400, origin);
+    }
+
+    const turnstileOk = await verifyTurnstile(payload.turnstileToken, env.TURNSTILE_SECRET_KEY, ip);
+    if (!turnstileOk) {
+      log("rejected_turnstile", { ip });
+      return json({ ok: false, error: "verification_failed" }, 403, origin);
+    }
+
+    const withinLimit = await checkRateLimit(env.RATE_LIMIT_KV, ip);
+    if (!withinLimit) {
+      log("rejected_rate_limited", { ip });
+      return json({ ok: false, error: "rate_limited" }, 429, origin);
     }
 
     const text = buildTelegramMessage({
@@ -292,22 +366,27 @@ export default {
       ip,
     });
 
-    const tgRes = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        chat_id: env.TELEGRAM_CHAT_ID,
-        text,
-        // No parse_mode — sent as plain text so nothing a visitor types can
-        // break or inject Markdown/HTML formatting in the delivered message.
-        disable_web_page_preview: true,
-      }),
-    });
-
-    if (!tgRes.ok) {
-      return json({ ok: false, error: "delivery_failed" }, 502, origin);
+    try {
+      await sendTelegram(env, text);
+      log("delivered", { ip, chars: text.length });
+      return json({ ok: true }, 200, origin);
+    } catch (error) {
+      console.error(JSON.stringify({ event: "delivery_failed", ip, message: String(error?.message || error) }));
     }
 
-    return json({ ok: true }, 200, origin);
+    // Telegram is down or misconfigured: park the lead in KV so it isn't lost.
+    // List them with: npx wrangler kv key list --binding RATE_LIMIT_KV --prefix lead:
+    if (env.RATE_LIMIT_KV) {
+      try {
+        const key = `lead:${new Date().toISOString()}:${crypto.randomUUID().slice(0, 8)}`;
+        await env.RATE_LIMIT_KV.put(key, text, { expirationTtl: UNDELIVERED_TTL_SECONDS });
+        console.error(JSON.stringify({ event: "lead_parked", key }));
+        return json({ ok: true, queued: true }, 200, origin);
+      } catch (error) {
+        console.error(JSON.stringify({ event: "park_failed", message: String(error?.message || error) }));
+      }
+    }
+
+    return json({ ok: false, error: "delivery_failed" }, 502, origin);
   },
 };

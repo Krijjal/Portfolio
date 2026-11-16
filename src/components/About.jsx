@@ -6,6 +6,7 @@ export function About() {
   return (
     <SectionShell id="about">
       <SectionHeading
+        as="h1"
         eyebrow="About"
         title="From shipping features to owning the system."
         description="I care about work that lasts after I step away: clear boundaries, honest reviews, and systems the next person can run without guessing."

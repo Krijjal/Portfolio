@@ -8,6 +8,7 @@ export function Experience() {
   return (
     <SectionShell id="experience">
       <SectionHeading
+        as="h1"
         eyebrow="Experience"
         title="Professional experience."
         description="Grouped by company so you can see the arc: today at TGMENA, then several years at SarrdehTech from WordPress and Flutter into team lead and full stack work."
@@ -40,12 +41,11 @@ export function Experience() {
                     </p>
                   ) : null}
                 </div>
-                {employer.websiteUrl && (employer.localLogoUrl || employer.logoUrl) ? (
+                {employer.websiteUrl && employer.localLogoUrl ? (
                   <EmployerLogo
                     company={employer.company}
                     websiteUrl={employer.websiteUrl}
                     localLogoUrl={employer.localLogoUrl}
-                    logoUrl={employer.logoUrl}
                     logoTreatment={employer.logoTreatment}
                   />
                 ) : null}
